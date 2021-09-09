@@ -10,5 +10,3 @@ all-up-test:
 
 build-cmd:
 	cd $(VENDOR_DIR)/gravity-bridge/module; make
-	@echo
-	peggy help
