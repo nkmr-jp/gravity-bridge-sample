@@ -7,29 +7,31 @@
 +++ dirname tests/all-up-test.sh
 ++ cd tests
 ++ pwd
-+ DIR=[PATH]/gravity-bridge/tests
-+ bash [PATH]/gravity-bridge/tests/build-container.sh
-+++ dirname [PATH]/gravity-bridge/tests/build-container.sh
-++ cd [PATH]/gravity-bridge/tests
++ DIR=[path]/gravity-bridge/tests
++ bash [path]/gravity-bridge/tests/build-container.sh
++++ dirname [path]/gravity-bridge/tests/build-container.sh
+++ cd [path]/gravity-bridge/tests
 ++ pwd
-+ DIR=[PATH]/gravity-bridge/tests
-+ DOCKERFOLDER=[PATH]/gravity-bridge/tests/dockerfile
-+ REPOFOLDER=[PATH]/gravity-bridge/tests/..
-+ pushd [PATH]/gravity-bridge/tests/..
-+ git archive --format=tar.gz -o [PATH]/gravity-bridge/tests/dockerfile/peggy.tar.gz --prefix=peggy/ HEAD
-+ pushd [PATH]/gravity-bridge/tests/dockerfile
++ DIR=[path]/gravity-bridge/tests
++ DOCKERFOLDER=[path]/gravity-bridge/tests/dockerfile
++ REPOFOLDER=[path]/gravity-bridge/tests/..
++ pushd [path]/gravity-bridge/tests/..
+~/[path]/gravity-bridge ~/[path]/gravity-bridge
++ git archive --format=tar.gz -o [path]/gravity-bridge/tests/dockerfile/peggy.tar.gz --prefix=peggy/ HEAD
++ pushd [path]/gravity-bridge/tests/dockerfile
+~/[path]/gravity-bridge/tests/dockerfile ~/[path]/gravity-bridge ~/[path]/gravity-bridge
 + docker build -t peggy-base .
-[+] Building 596.6s (20/20) FINISHED                                                                                                                                                                                                                                              
+[+] Building 4.5s (20/20) FINISHED
  => [internal] load build definition from Dockerfile                                                                                                                                                                                                                         0.0s
  => => transferring dockerfile: 37B                                                                                                                                                                                                                                          0.0s
  => [internal] load .dockerignore                                                                                                                                                                                                                                            0.0s
  => => transferring context: 2B                                                                                                                                                                                                                                              0.0s
- => [internal] load metadata for docker.io/library/fedora:latest                                                                                                                                                                                                             1.0s
- => [internal] load build context                                                                                                                                                                                                                                            0.8s
- => => transferring context: 15.04MB                                                                                                                                                                                                                                         0.7s
+ => [internal] load metadata for docker.io/library/fedora:latest                                                                                                                                                                                                             2.8s
  => [ 1/13] FROM docker.io/library/fedora@sha256:d18bc88f640bc3e88bbfacaff698c3e1e83cae649019657a3880881f2549a1d0                                                                                                                                                            0.0s
- => https://gethstore.blob.core.windows.net/builds/geth-linux-amd64-1.10.1-c2d2f4ed.tar.gz                                                                                                                                                                                 594.6s
- => https://golang.org/dl/go1.15.6.linux-amd64.tar.gz                                                                                                                                                                                                                      262.8s
+ => [internal] load build context                                                                                                                                                                                                                                            0.5s
+ => => transferring context: 15.04MB                                                                                                                                                                                                                                         0.5s
+ => https://gethstore.blob.core.windows.net/builds/geth-linux-amd64-1.10.1-c2d2f4ed.tar.gz                                                                                                                                                                                   1.1s
+ => https://golang.org/dl/go1.15.6.linux-amd64.tar.gz                                                                                                                                                                                                                        0.5s
  => CACHED [ 2/13] RUN dnf install -y git make gcc gcc-c++ which iproute iputils procps-ng vim-minimal tmux net-tools htop tar jq npm openssl-devel perl                                                                                                                     0.0s
  => CACHED [ 3/13] ADD https://golang.org/dl/go1.15.6.linux-amd64.tar.gz /go/                                                                                                                                                                                                0.0s
  => CACHED [ 4/13] RUN cd /go && tar -xvf * && mv /go/**/ /usr/local/                                                                                                                                                                                                        0.0s
@@ -48,13 +50,14 @@
  => => naming to docker.io/library/peggy-base                                                                                                                                                                                                                                0.0s
 + set +e
 + docker rm -f peggy_all_up_test_instance
+peggy_all_up_test_instance
 + set -e
 + NODES=3
 + set +u
 + TEST_TYPE=
 + ALCHEMY_ID=
 + set -u
-+ docker run --name peggy_all_up_test_instance --cap-add=NET_ADMIN -t peggy-base /bin/
++ docker run --name peggy_all_up_test_instance --cap-add=NET_ADMIN -t peggy-base /bin/bash /peggy/tests/container-scripts/all-up-test-internal.sh 3
 ```
 
 # 2. コンテナ内でスクリプト実行
@@ -62,8 +65,6 @@
 ## 2-1. Setup Solidity
 
 ```sh
-bash /peggy/tests/container-scripts/all-up-test-internal.sh 3
-peggy_all_up_test_instance
 + pushd /peggy/solidity/
 /peggy/solidity /
 + HUSKY_SKIP_INSTALL=1
@@ -78,7 +79,7 @@ npm WARN gravity-contracts@1.0.0 No description
 npm WARN gravity-contracts@1.0.0 No repository field.
 npm WARN gravity-contracts@1.0.0 license should be a valid SPDX license expression
 
-updated 2 packages and audited 2527 packages in 24.853s
+updated 2 packages and audited 2527 packages in 23.478s
 
 152 packages are looking for funding
   run `npm fund` for details
@@ -107,8 +108,8 @@ Successfully generated Typechain artifacts!
 
    ╭────────────────────────────────────────────────────────────────╮
    │                                                                │
-   │     New major version of npm available! 6.14.13 -> 7.22.0      │
-   │   Changelog: https://github.com/npm/cli/releases/tag/v7.22.0   │
+   │     New major version of npm available! 6.14.13 -> 7.23.0      │
+   │   Changelog: https://github.com/npm/cli/releases/tag/v7.23.0   │
    │               Run npm install -g npm to update!                │
    │                                                                │
    ╰────────────────────────────────────────────────────────────────╯
@@ -154,13 +155,13 @@ Global Flags:
 + STARTING_VALIDATOR=1
 + STARTING_VALIDATOR_HOME='--home /validator1'
 + peggy init --home /validator1 --chain-id=peggy-test validator1
-{"app_message":{"auth":{"accounts":[],"params":{"max_memo_characters":"256","sig_verify_cost_ed25519":"590","sig_verify_cost_secp256k1":"1000","tx_sig_limit":"7","tx_size_cost_per_byte":"10"}},"bank":{"balances":[],"denom_metadata":[],"params":{"default_send_enabled":true,"send_enabled":[]},"supply":[]},"capability":{"index":"1","owners":[]},"crisis":{"constant_fee":{"amount":"1000","denom":"stake"}},"distribution":{"delegator_starting_infos":[],"delegator_withdraw_infos":[],"fee_pool":{"community_pool":[]},"outstanding_rewards":[],"params":{"base_proposer_reward":"0.010000000000000000","bonus_proposer_reward":"0.040000000000000000","community_tax":"0.020000000000000000","withdraw_addr_enabled":true},"previous_proposer":"","validator_accumulated_commissions":[],"validator_current_rewards":[],"validator_historical_rewards":[],"validator_slash_events":[]},"evidence":{"evidence":[]},"genutil":{"gen_txs":[]},"gov":{"deposit_params":{"max_deposit_period":"172800s","min_deposit":[{"amount":"10000000","denom":"stake"}]},"deposits":[],"proposals":[],"starting_proposal_id":"1","tally_params":{"quorum":"0.334000000000000000","threshold":"0.500000000000000000","veto_threshold":"0.334000000000000000"},"votes":[],"voting_params":{"voting_period":"172800s"}},"ibc":{"channel_genesis":{"ack_sequences":[],"acknowledgements":[],"channels":[],"commitments":[],"next_channel_sequence":"0","receipts":[],"recv_sequences":[],"send_sequences":[]},"client_genesis":{"clients":[],"clients_consensus":[],"clients_metadata":[],"create_localhost":false,"next_client_sequence":"0","params":{"allowed_clients":["06-solomachine","07-tendermint"]}},"connection_genesis":{"client_connection_paths":[],"connections":[],"next_connection_sequence":"0"}},"mint":{"minter":{"annual_provisions":"0.000000000000000000","inflation":"0.130000000000000000"},"params":{"blocks_per_year":"6311520","goal_bonded":"0.670000000000000000","inflation_max":"0.200000000000000000","inflation_min":"0.070000000000000000","inflation_rate_change":"0.130000000000000000","mint_denom":"stake"}},"params":null,"peggy":{"attestations":[],"batch_confirms":[],"batches":[],"delegate_keys":[],"erc20_to_denoms":[],"last_observed_nonce":"0","logic_call_confirms":[],"logic_calls":[],"params":{"average_block_time":"5000","average_ethereum_block_time":"15000","bridge_chain_id":"0","bridge_ethereum_address":"","contract_source_hash":"","peggy_id":"defaultpeggyid","signed_batches_window":"10000","signed_claims_window":"10000","signed_valsets_window":"10000","slash_fraction_batch":"0.001000000000000000","slash_fraction_claim":"0.001000000000000000","slash_fraction_conflicting_claim":"0.001000000000000000","slash_fraction_valset":"0.001000000000000000","target_batch_timeout":"43200000","unbond_slashing_valsets_window":"10000"},"unbatched_transfers":[],"valset_confirms":[],"valsets":[]},"slashing":{"missed_blocks":[],"params":{"downtime_jail_duration":"600s","min_signed_per_window":"0.500000000000000000","signed_blocks_window":"100","slash_fraction_double_sign":"0.050000000000000000","slash_fraction_downtime":"0.010000000000000000"},"signing_infos":[]},"staking":{"delegations":[],"exported":false,"last_total_power":"0","last_validator_powers":[],"params":{"bond_denom":"stake","historical_entries":10000,"max_entries":7,"max_validators":100,"unbonding_time":"1814400s"},"redelegations":[],"unbonding_delegations":[],"validators":[]},"transfer":{"denom_traces":[],"params":{"receive_enabled":true,"send_enabled":true},"port_id":"transfer"},"upgrade":{},"vesting":{}},"chain_id":"peggy-test","gentxs_dir":"","moniker":"validator1","node_id":"3881e8f0d917cd1de98bb2f5d50b70970c8b8f97"}
+{"app_message":{"auth":{"accounts":[],"params":{"max_memo_characters":"256","sig_verify_cost_ed25519":"590","sig_verify_cost_secp256k1":"1000","tx_sig_limit":"7","tx_size_cost_per_byte":"10"}},"bank":{"balances":[],"denom_metadata":[],"params":{"default_send_enabled":true,"send_enabled":[]},"supply":[]},"capability":{"index":"1","owners":[]},"crisis":{"constant_fee":{"amount":"1000","denom":"stake"}},"distribution":{"delegator_starting_infos":[],"delegator_withdraw_infos":[],"fee_pool":{"community_pool":[]},"outstanding_rewards":[],"params":{"base_proposer_reward":"0.010000000000000000","bonus_proposer_reward":"0.040000000000000000","community_tax":"0.020000000000000000","withdraw_addr_enabled":true},"previous_proposer":"","validator_accumulated_commissions":[],"validator_current_rewards":[],"validator_historical_rewards":[],"validator_slash_events":[]},"evidence":{"evidence":[]},"genutil":{"gen_txs":[]},"gov":{"deposit_params":{"max_deposit_period":"172800s","min_deposit":[{"amount":"10000000","denom":"stake"}]},"deposits":[],"proposals":[],"starting_proposal_id":"1","tally_params":{"quorum":"0.334000000000000000","threshold":"0.500000000000000000","veto_threshold":"0.334000000000000000"},"votes":[],"voting_params":{"voting_period":"172800s"}},"ibc":{"channel_genesis":{"ack_sequences":[],"acknowledgements":[],"channels":[],"commitments":[],"next_channel_sequence":"0","receipts":[],"recv_sequences":[],"send_sequences":[]},"client_genesis":{"clients":[],"clients_consensus":[],"clients_metadata":[],"create_localhost":false,"next_client_sequence":"0","params":{"allowed_clients":["06-solomachine","07-tendermint"]}},"connection_genesis":{"client_connection_paths":[],"connections":[],"next_connection_sequence":"0"}},"mint":{"minter":{"annual_provisions":"0.000000000000000000","inflation":"0.130000000000000000"},"params":{"blocks_per_year":"6311520","goal_bonded":"0.670000000000000000","inflation_max":"0.200000000000000000","inflation_min":"0.070000000000000000","inflation_rate_change":"0.130000000000000000","mint_denom":"stake"}},"params":null,"peggy":{"attestations":[],"batch_confirms":[],"batches":[],"delegate_keys":[],"erc20_to_denoms":[],"last_observed_nonce":"0","logic_call_confirms":[],"logic_calls":[],"params":{"average_block_time":"5000","average_ethereum_block_time":"15000","bridge_chain_id":"0","bridge_ethereum_address":"","contract_source_hash":"","peggy_id":"defaultpeggyid","signed_batches_window":"10000","signed_claims_window":"10000","signed_valsets_window":"10000","slash_fraction_batch":"0.001000000000000000","slash_fraction_claim":"0.001000000000000000","slash_fraction_conflicting_claim":"0.001000000000000000","slash_fraction_valset":"0.001000000000000000","target_batch_timeout":"43200000","unbond_slashing_valsets_window":"10000"},"unbatched_transfers":[],"valset_confirms":[],"valsets":[]},"slashing":{"missed_blocks":[],"params":{"downtime_jail_duration":"600s","min_signed_per_window":"0.500000000000000000","signed_blocks_window":"100","slash_fraction_double_sign":"0.050000000000000000","slash_fraction_downtime":"0.010000000000000000"},"signing_infos":[]},"staking":{"delegations":[],"exported":false,"last_total_power":"0","last_validator_powers":[],"params":{"bond_denom":"stake","historical_entries":10000,"max_entries":7,"max_validators":100,"unbonding_time":"1814400s"},"redelegations":[],"unbonding_delegations":[],"validators":[]},"transfer":{"denom_traces":[],"params":{"receive_enabled":true,"send_enabled":true},"port_id":"transfer"},"upgrade":{},"vesting":{}},"chain_id":"peggy-test","gentxs_dir":"","moniker":"validator1","node_id":"05724dc60452794d5337c8fd5a1692480217f127"}
 + jq '.app_state.bank.denom_metadata += [{"base": "footoken", display: "mfootoken", "description": "A non-staking test token", "denom_units": [{"denom": "footoken", "exponent": 0}, {"denom": "mfootoken", "exponent": 6}]}, {"base": "stake", display: "mstake", "description": "A staking test token", "denom_units": [{"denom": "stake", "exponent": 0}, {"denom": "mstake", "exponent": 6}]}]' /validator1/config/genesis.json
 + mv /edited-genesis.json /genesis.json
 + cp /legacy-api-enable /validator1/config/app.toml
 ```
 
-### 2-2-2. `peggy keys add`
+### 2-2-2. `peggy keys add` `keys show` `add-genesis-account`
 
 <details>
 
@@ -246,9 +247,40 @@ Global Flags:
       --trace                    print out full stack trace on errors
 ```
 
-
 </details>
 
+<details>
+
+<summary>peggy help add-genesis-account</summary>
+
+```sh
+peggy help add-genesis-account
+Add a genesis account to genesis.json. The provided account must specify
+the account address or key name and a list of initial coins. If a key name is given,
+the address will be looked up in the local Keybase. The list of initial tokens must
+contain valid denominations. Accounts may optionally be supplied with vesting parameters.
+
+Usage:
+  peggy add-genesis-account [address_or_key_name] [coin][,[coin]] [flags]
+
+Flags:
+      --height int               Use a specific height to query state at (this can error if the node is pruning state)
+  -h, --help                     help for add-genesis-account
+      --keyring-backend string   Select keyring's backend (os|file|kwallet|pass|test) (default "os")
+      --node string              <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
+  -o, --output string            Output format (text|json) (default "text")
+      --vesting-amount string    amount of coins for vesting accounts
+      --vesting-end-time int     schedule end time (unix epoch) for vesting accounts
+      --vesting-start-time int   schedule start time (unix epoch) for vesting accounts
+
+Global Flags:
+      --home string        directory for config and data (default "$HOME/.peggy")
+      --log_level string   The logging level in the format of <module>:<level>,... (default "info")
+      --trace              print out full stack trace on errors
+```
+
+
+</details>
 
 #### validator1
 ```sh
@@ -260,17 +292,17 @@ Global Flags:
 + peggy keys add --home /validator1 --keyring-backend test validator1
 - name: validator1
   type: local
-  address: cosmos1lna3043fuv6p8fnskxs2q7jufzpyzemly5y9as
-  pubkey: cosmospub1addwnpepqv59y2age75v9jpwkfc3j9xpkdzwclxrtxy44qx2chgzhxw022hp2pls2ff
+  address: cosmos1a42emzmx2e8c2668u2taq8d3cwdvr5nc086y6u
+  pubkey: cosmospub1addwnpepqt5ec92nvt2vz0n9pndwftq2slsecm5t4z2fxs8fh9q9rh78at26skayq8x
   mnemonic: ""
   threshold: 0
   pubkeys: []
 
 ++ peggy keys show validator1 -a --home /validator1 --keyring-backend test
-+ KEY=cosmos1lna3043fuv6p8fnskxs2q7jufzpyzemly5y9as
++ KEY=cosmos1a42emzmx2e8c2668u2taq8d3cwdvr5nc086y6u
 + mkdir -p /validator1/config/
 + mv /genesis.json /validator1/config/genesis.json
-+ peggy add-genesis-account --home /validator1 --keyring-backend test cosmos1lna3043fuv6p8fnskxs2q7jufzpyzemly5y9as 10000000000stake,10000000000footoken
++ peggy add-genesis-account --home /validator1 --keyring-backend test cosmos1a42emzmx2e8c2668u2taq8d3cwdvr5nc086y6u 10000000000stake,10000000000footoken
 + mv /validator1/config/genesis.json /genesis.json
 ```
 
@@ -283,17 +315,17 @@ Global Flags:
 + peggy keys add --home /validator2 --keyring-backend test validator2
 - name: validator2
   type: local
-  address: cosmos1vdc2frekew3caavwcvk0pg2uztec4mu8vh9gek
-  pubkey: cosmospub1addwnpepqd6vnv95ml29ph4ksga3y22zvehtel76hd9ty73mwr6ftavynms6jx35mth
+  address: cosmos1g440atgq8ln6fdaghpt6frwxtve8kaguhxg27l
+  pubkey: cosmospub1addwnpepq28ky6258et5t7waznghfgr7h5cupgz8j6pxc2uty3zpzcwxulg66ajj0rs
   mnemonic: ""
   threshold: 0
   pubkeys: []
 
 ++ peggy keys show validator2 -a --home /validator2 --keyring-backend test
-+ KEY=cosmos1vdc2frekew3caavwcvk0pg2uztec4mu8vh9gek
++ KEY=cosmos1g440atgq8ln6fdaghpt6frwxtve8kaguhxg27l
 + mkdir -p /validator2/config/
 + mv /genesis.json /validator2/config/genesis.json
-+ peggy add-genesis-account --home /validator2 --keyring-backend test cosmos1vdc2frekew3caavwcvk0pg2uztec4mu8vh9gek 10000000000stake,10000000000footoken
++ peggy add-genesis-account --home /validator2 --keyring-backend test cosmos1g440atgq8ln6fdaghpt6frwxtve8kaguhxg27l 10000000000stake,10000000000footoken
 + mv /validator2/config/genesis.json /genesis.json
 ```
 
@@ -307,17 +339,17 @@ Global Flags:
 + peggy keys add --home /validator3 --keyring-backend test validator3
 - name: validator3
   type: local
-  address: cosmos1nqxw98f0wj2grcvfw9pa2w6307untq5v5xqtyv
-  pubkey: cosmospub1addwnpepq2lv9v7njuxwnveplwxl4rww0zatr648xr856y4gmtsyya8d4dmdj30n2c0
+  address: cosmos19a6z7v4hc62t267e4de74ayty05v30rv9z6xv2
+  pubkey: cosmospub1addwnpepqgemt6s06cgpx7eys5389wx78cpmhk8h2z4ksfffhzlmj94ema4fzx27203
   mnemonic: ""
   threshold: 0
   pubkeys: []
 
 ++ peggy keys show validator3 -a --home /validator3 --keyring-backend test
-+ KEY=cosmos1nqxw98f0wj2grcvfw9pa2w6307untq5v5xqtyv
++ KEY=cosmos19a6z7v4hc62t267e4de74ayty05v30rv9z6xv2
 + mkdir -p /validator3/config/
 + mv /genesis.json /validator3/config/genesis.json
-+ peggy add-genesis-account --home /validator3 --keyring-backend test cosmos1nqxw98f0wj2grcvfw9pa2w6307untq5v5xqtyv 10000000000stake,10000000000footoken
++ peggy add-genesis-account --home /validator3 --keyring-backend test cosmos19a6z7v4hc62t267e4de74ayty05v30rv9z6xv2 10000000000stake,10000000000footoken
 + mv /validator3/config/genesis.json /genesis.json
 ```
 
@@ -405,24 +437,24 @@ Global Flags:
 + GAIA_HOME='--home /validator1'
 + ARGS='--home /validator1 --keyring-backend test'
 + peggy gentx --home /validator1 --keyring-backend test --home /validator1 --moniker validator1 --chain-id=peggy-test --ip 7.7.7.1 validator1 500000000stake
-Genesis transaction written to "/validator1/config/gentx/gentx-3881e8f0d917cd1de98bb2f5d50b70970c8b8f97.json"
+Genesis transaction written to "/validator1/config/gentx/gentx-05724dc60452794d5337c8fd5a1692480217f127.json"
 + '[' 1 -gt 1 ']'
 + for i in $(seq 1 $NODES)
 + cp /genesis.json /validator2/config/genesis.json
 + GAIA_HOME='--home /validator2'
 + ARGS='--home /validator2 --keyring-backend test'
 + peggy gentx --home /validator2 --keyring-backend test --home /validator2 --moniker validator2 --chain-id=peggy-test --ip 7.7.7.2 validator2 500000000stake
-Genesis transaction written to "/validator2/config/gentx/gentx-56880a24b86653602831e4f7f00883546bdbc4a9.json"
+Genesis transaction written to "/validator2/config/gentx/gentx-47f6c6c8798fb47e3368364bc348b0ae04a89e8a.json"
 + '[' 2 -gt 1 ']'
-+ cp /validator2/config/gentx/gentx-56880a24b86653602831e4f7f00883546bdbc4a9.json /validator1/config/gentx/
++ cp /validator2/config/gentx/gentx-47f6c6c8798fb47e3368364bc348b0ae04a89e8a.json /validator1/config/gentx/
 + for i in $(seq 1 $NODES)
 + cp /genesis.json /validator3/config/genesis.json
 + GAIA_HOME='--home /validator3'
 + ARGS='--home /validator3 --keyring-backend test'
 + peggy gentx --home /validator3 --keyring-backend test --home /validator3 --moniker validator3 --chain-id=peggy-test --ip 7.7.7.3 validator3 500000000stake
-Genesis transaction written to "/validator3/config/gentx/gentx-eff68f5b8de54b31989ed05d714cf12d97a05071.json"
+Genesis transaction written to "/validator3/config/gentx/gentx-634cd4a67b879be0a83c3e0375cd5a3d539d9d02.json"
 + '[' 3 -gt 1 ']'
-+ cp /validator3/config/gentx/gentx-eff68f5b8de54b31989ed05d714cf12d97a05071.json /validator1/config/gentx/
++ cp /validator3/config/gentx/gentx-634cd4a67b879be0a83c3e0375cd5a3d539d9d02.json /validator1/config/gentx/
 ```
 
 ### 2-2-4. `peggy collect-gentxs`
@@ -453,7 +485,7 @@ Global Flags:
 
 ```sh
 + peggy collect-gentxs --home /validator1 test
-{"app_message":{"auth":{"accounts":[{"@type":"/cosmos.auth.v1beta1.BaseAccount","account_number":"0","address":"cosmos1lna3043fuv6p8fnskxs2q7jufzpyzemly5y9as","pub_key":null,"sequence":"0"},{"@type":"/cosmos.auth.v1beta1.BaseAccount","account_number":"0","address":"cosmos1vdc2frekew3caavwcvk0pg2uztec4mu8vh9gek","pub_key":null,"sequence":"0"},{"@type":"/cosmos.auth.v1beta1.BaseAccount","account_number":"0","address":"cosmos1nqxw98f0wj2grcvfw9pa2w6307untq5v5xqtyv","pub_key":null,"sequence":"0"}],"params":{"max_memo_characters":"256","sig_verify_cost_ed25519":"590","sig_verify_cost_secp256k1":"1000","tx_sig_limit":"7","tx_size_cost_per_byte":"10"}},"bank":{"balances":[{"address":"cosmos1vdc2frekew3caavwcvk0pg2uztec4mu8vh9gek","coins":[{"amount":"10000000000","denom":"footoken"},{"amount":"10000000000","denom":"stake"}]},{"address":"cosmos1nqxw98f0wj2grcvfw9pa2w6307untq5v5xqtyv","coins":[{"amount":"10000000000","denom":"footoken"},{"amount":"10000000000","denom":"stake"}]},{"address":"cosmos1lna3043fuv6p8fnskxs2q7jufzpyzemly5y9as","coins":[{"amount":"10000000000","denom":"footoken"},{"amount":"10000000000","denom":"stake"}]}],"denom_metadata":[{"base":"footoken","denom_units":[{"aliases":[],"denom":"footoken","exponent":0},{"aliases":[],"denom":"mfootoken","exponent":6}],"description":"A non-staking test token","display":"mfootoken"},{"base":"stake","denom_units":[{"aliases":[],"denom":"stake","exponent":0},{"aliases":[],"denom":"mstake","exponent":6}],"description":"A staking test token","display":"mstake"}],"params":{"default_send_enabled":true,"send_enabled":[]},"supply":[]},"capability":{"index":"1","owners":[]},"crisis":{"constant_fee":{"amount":"1000","denom":"stake"}},"distribution":{"delegator_starting_infos":[],"delegator_withdraw_infos":[],"fee_pool":{"community_pool":[]},"outstanding_rewards":[],"params":{"base_proposer_reward":"0.010000000000000000","bonus_proposer_reward":"0.040000000000000000","community_tax":"0.020000000000000000","withdraw_addr_enabled":true},"previous_proposer":"","validator_accumulated_commissions":[],"validator_current_rewards":[],"validator_historical_rewards":[],"validator_slash_events":[]},"evidence":{"evidence":[]},"genutil":{"gen_txs":[{"auth_info":{"fee":{"amount":[],"gas_limit":"200000","granter":"","payer":""},"signer_infos":[{"mode_info":{"single":{"mode":"SIGN_MODE_DIRECT"}},"public_key":{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"AyhSK6jPqMLILrJxGRTBs0TsfMNZiVqAysXQK5nPUq4V"},"sequence":"0"}]},"body":{"extension_options":[],"memo":"3881e8f0d917cd1de98bb2f5d50b70970c8b8f97@7.7.7.1:26656","messages":[{"@type":"/cosmos.staking.v1beta1.MsgCreateValidator","commission":{"max_change_rate":"0.010000000000000000","max_rate":"0.200000000000000000","rate":"0.100000000000000000"},"delegator_address":"cosmos1lna3043fuv6p8fnskxs2q7jufzpyzemly5y9as","description":{"details":"","identity":"","moniker":"validator1","security_contact":"","website":""},"min_self_delegation":"1","pubkey":{"@type":"/cosmos.crypto.ed25519.PubKey","key":"s8mJ/cniwU1cf5Sm9kBffdkDEtl8Em81T5RQeF6H56g="},"validator_address":"cosmosvaloper1lna3043fuv6p8fnskxs2q7jufzpyzemlpqss3r","value":{"amount":"500000000","denom":"stake"}}],"non_critical_extension_options":[],"timeout_height":"0"},"signatures":["QwLvZA/Y+fpiBOZLNbJT4/uw/dlbuJvb2RCIrl3Cx+ETqP6uK9RP3vZgv/Lm7KX+05NybsUtvbgXZJprGjaWfQ=="]},{"auth_info":{"fee":{"amount":[],"gas_limit":"200000","granter":"","payer":""},"signer_infos":[{"mode_info":{"single":{"mode":"SIGN_MODE_DIRECT"}},"public_key":{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"A3TJsLTf1FDetoI7EilCZm68/9q7SrJ6O3D0lfWEnuGp"},"sequence":"0"}]},"body":{"extension_options":[],"memo":"56880a24b86653602831e4f7f00883546bdbc4a9@7.7.7.2:26656","messages":[{"@type":"/cosmos.staking.v1beta1.MsgCreateValidator","commission":{"max_change_rate":"0.010000000000000000","max_rate":"0.200000000000000000","rate":"0.100000000000000000"},"delegator_address":"cosmos1vdc2frekew3caavwcvk0pg2uztec4mu8vh9gek","description":{"details":"","identity":"","moniker":"validator2","security_contact":"","website":""},"min_self_delegation":"1","pubkey":{"@type":"/cosmos.crypto.ed25519.PubKey","key":"coRdo2tQgu6E13rHk3IadrRbjI5rTi+JWZxeSooAomY="},"validator_address":"cosmosvaloper1vdc2frekew3caavwcvk0pg2uztec4mu8fr3a49","value":{"amount":"500000000","denom":"stake"}}],"non_critical_extension_options":[],"timeout_height":"0"},"signatures":["OL2LWiqbJ8m+4scTyoBzbyTxJt73yeK0N0tHz9PQcT8qZ8uxTiHj5AJU8QTWzRSvFJNaMs46716DJrlJKpGYvw=="]},{"auth_info":{"fee":{"amount":[],"gas_limit":"200000","granter":"","payer":""},"signer_infos":[{"mode_info":{"single":{"mode":"SIGN_MODE_DIRECT"}},"public_key":{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"Ar7Cs9OXDOmzIfuN+o3OeLqx6qcwz00SqNrgQnTtq3bZ"},"sequence":"0"}]},"body":{"extension_options":[],"memo":"eff68f5b8de54b31989ed05d714cf12d97a05071@7.7.7.3:26656","messages":[{"@type":"/cosmos.staking.v1beta1.MsgCreateValidator","commission":{"max_change_rate":"0.010000000000000000","max_rate":"0.200000000000000000","rate":"0.100000000000000000"},"delegator_address":"cosmos1nqxw98f0wj2grcvfw9pa2w6307untq5v5xqtyv","description":{"details":"","identity":"","moniker":"validator3","security_contact":"","website":""},"min_self_delegation":"1","pubkey":{"@type":"/cosmos.crypto.ed25519.PubKey","key":"MbzNDmecKZgNvgLSbpKTBNqtKEM5D1YRbu8Rre8shGE="},"validator_address":"cosmosvaloper1nqxw98f0wj2grcvfw9pa2w6307untq5v3j57gl","value":{"amount":"500000000","denom":"stake"}}],"non_critical_extension_options":[],"timeout_height":"0"},"signatures":["x8h+2k21rfNYqR6EAqiD7nSjvHGeg/P/Z8b+nT17o/BCaXB6XCaELYGhhwaOQi2y2lksS6yt9QH1pBhtPNzBIg=="]}]},"gov":{"deposit_params":{"max_deposit_period":"172800s","min_deposit":[{"amount":"10000000","denom":"stake"}]},"deposits":[],"proposals":[],"starting_proposal_id":"1","tally_params":{"quorum":"0.334000000000000000","threshold":"0.500000000000000000","veto_threshold":"0.334000000000000000"},"votes":[],"voting_params":{"voting_period":"172800s"}},"ibc":{"channel_genesis":{"ack_sequences":[],"acknowledgements":[],"channels":[],"commitments":[],"next_channel_sequence":"0","receipts":[],"recv_sequences":[],"send_sequences":[]},"client_genesis":{"clients":[],"clients_consensus":[],"clients_metadata":[],"create_localhost":false,"next_client_sequence":"0","params":{"allowed_clients":["06-solomachine","07-tendermint"]}},"connection_genesis":{"client_connection_paths":[],"connections":[],"next_connection_sequence":"0"}},"mint":{"minter":{"annual_provisions":"0.000000000000000000","inflation":"0.130000000000000000"},"params":{"blocks_per_year":"6311520","goal_bonded":"0.670000000000000000","inflation_max":"0.200000000000000000","inflation_min":"0.070000000000000000","inflation_rate_change":"0.130000000000000000","mint_denom":"stake"}},"params":null,"peggy":{"attestations":[],"batch_confirms":[],"batches":[],"delegate_keys":[],"erc20_to_denoms":[],"last_observed_nonce":"0","logic_call_confirms":[],"logic_calls":[],"params":{"average_block_time":"5000","average_ethereum_block_time":"15000","bridge_chain_id":"0","bridge_ethereum_address":"","contract_source_hash":"","peggy_id":"defaultpeggyid","signed_batches_window":"10000","signed_claims_window":"10000","signed_valsets_window":"10000","slash_fraction_batch":"0.001000000000000000","slash_fraction_claim":"0.001000000000000000","slash_fraction_conflicting_claim":"0.001000000000000000","slash_fraction_valset":"0.001000000000000000","target_batch_timeout":"43200000","unbond_slashing_valsets_window":"10000"},"unbatched_transfers":[],"valset_confirms":[],"valsets":[]},"slashing":{"missed_blocks":[],"params":{"downtime_jail_duration":"600s","min_signed_per_window":"0.500000000000000000","signed_blocks_window":"100","slash_fraction_double_sign":"0.050000000000000000","slash_fraction_downtime":"0.010000000000000000"},"signing_infos":[]},"staking":{"delegations":[],"exported":false,"last_total_power":"0","last_validator_powers":[],"params":{"bond_denom":"stake","historical_entries":10000,"max_entries":7,"max_validators":100,"unbonding_time":"1814400s"},"redelegations":[],"unbonding_delegations":[],"validators":[]},"transfer":{"denom_traces":[],"params":{"receive_enabled":true,"send_enabled":true},"port_id":"transfer"},"upgrade":{},"vesting":{}},"chain_id":"peggy-test","gentxs_dir":"/validator1/config/gentx","moniker":"validator1","node_id":"3881e8f0d917cd1de98bb2f5d50b70970c8b8f97"}
+{"app_message":{"auth":{"accounts":[{"@type":"/cosmos.auth.v1beta1.BaseAccount","account_number":"0","address":"cosmos1a42emzmx2e8c2668u2taq8d3cwdvr5nc086y6u","pub_key":null,"sequence":"0"},{"@type":"/cosmos.auth.v1beta1.BaseAccount","account_number":"0","address":"cosmos1g440atgq8ln6fdaghpt6frwxtve8kaguhxg27l","pub_key":null,"sequence":"0"},{"@type":"/cosmos.auth.v1beta1.BaseAccount","account_number":"0","address":"cosmos19a6z7v4hc62t267e4de74ayty05v30rv9z6xv2","pub_key":null,"sequence":"0"}],"params":{"max_memo_characters":"256","sig_verify_cost_ed25519":"590","sig_verify_cost_secp256k1":"1000","tx_sig_limit":"7","tx_size_cost_per_byte":"10"}},"bank":{"balances":[{"address":"cosmos19a6z7v4hc62t267e4de74ayty05v30rv9z6xv2","coins":[{"amount":"10000000000","denom":"footoken"},{"amount":"10000000000","denom":"stake"}]},{"address":"cosmos1g440atgq8ln6fdaghpt6frwxtve8kaguhxg27l","coins":[{"amount":"10000000000","denom":"footoken"},{"amount":"10000000000","denom":"stake"}]},{"address":"cosmos1a42emzmx2e8c2668u2taq8d3cwdvr5nc086y6u","coins":[{"amount":"10000000000","denom":"footoken"},{"amount":"10000000000","denom":"stake"}]}],"denom_metadata":[{"base":"footoken","denom_units":[{"aliases":[],"denom":"footoken","exponent":0},{"aliases":[],"denom":"mfootoken","exponent":6}],"description":"A non-staking test token","display":"mfootoken"},{"base":"stake","denom_units":[{"aliases":[],"denom":"stake","exponent":0},{"aliases":[],"denom":"mstake","exponent":6}],"description":"A staking test token","display":"mstake"}],"params":{"default_send_enabled":true,"send_enabled":[]},"supply":[]},"capability":{"index":"1","owners":[]},"crisis":{"constant_fee":{"amount":"1000","denom":"stake"}},"distribution":{"delegator_starting_infos":[],"delegator_withdraw_infos":[],"fee_pool":{"community_pool":[]},"outstanding_rewards":[],"params":{"base_proposer_reward":"0.010000000000000000","bonus_proposer_reward":"0.040000000000000000","community_tax":"0.020000000000000000","withdraw_addr_enabled":true},"previous_proposer":"","validator_accumulated_commissions":[],"validator_current_rewards":[],"validator_historical_rewards":[],"validator_slash_events":[]},"evidence":{"evidence":[]},"genutil":{"gen_txs":[{"auth_info":{"fee":{"amount":[],"gas_limit":"200000","granter":"","payer":""},"signer_infos":[{"mode_info":{"single":{"mode":"SIGN_MODE_DIRECT"}},"public_key":{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"AumcFVNi1ME+ZQza5KwKh+GcbouolJNA6blAUd/H6tWo"},"sequence":"0"}]},"body":{"extension_options":[],"memo":"05724dc60452794d5337c8fd5a1692480217f127@7.7.7.1:26656","messages":[{"@type":"/cosmos.staking.v1beta1.MsgCreateValidator","commission":{"max_change_rate":"0.010000000000000000","max_rate":"0.200000000000000000","rate":"0.100000000000000000"},"delegator_address":"cosmos1a42emzmx2e8c2668u2taq8d3cwdvr5nc086y6u","description":{"details":"","identity":"","moniker":"validator1","security_contact":"","website":""},"min_self_delegation":"1","pubkey":{"@type":"/cosmos.crypto.ed25519.PubKey","key":"NAB9He/QmnebpD0/dN4zlzFT1SmqwI3/ptW8pYeBo4Q="},"validator_address":"cosmosvaloper1a42emzmx2e8c2668u2taq8d3cwdvr5nc2nw3k0","value":{"amount":"500000000","denom":"stake"}}],"non_critical_extension_options":[],"timeout_height":"0"},"signatures":["kPw/XEGpi4GC7Ag3t1VZ/O1th/GoPQ4sSfYeySHKDDN78rilBcTJrcDL8ly1WDyCn04ZOVSjSbFC605e9eyF+w=="]},{"auth_info":{"fee":{"amount":[],"gas_limit":"200000","granter":"","payer":""},"signer_infos":[{"mode_info":{"single":{"mode":"SIGN_MODE_DIRECT"}},"public_key":{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"Ao9iaVQ+V0X53RTRdKB+vTHAoEeWgmwriyREEWHG59Gt"},"sequence":"0"}]},"body":{"extension_options":[],"memo":"47f6c6c8798fb47e3368364bc348b0ae04a89e8a@7.7.7.2:26656","messages":[{"@type":"/cosmos.staking.v1beta1.MsgCreateValidator","commission":{"max_change_rate":"0.010000000000000000","max_rate":"0.200000000000000000","rate":"0.100000000000000000"},"delegator_address":"cosmos1g440atgq8ln6fdaghpt6frwxtve8kaguhxg27l","description":{"details":"","identity":"","moniker":"validator2","security_contact":"","website":""},"min_self_delegation":"1","pubkey":{"@type":"/cosmos.crypto.ed25519.PubKey","key":"s1SppDCZiL/SUKC4plidT6ULtOoLufg+vI6slIqdz20="},"validator_address":"cosmosvaloper1g440atgq8ln6fdaghpt6frwxtve8kagujjuljv","value":{"amount":"500000000","denom":"stake"}}],"non_critical_extension_options":[],"timeout_height":"0"},"signatures":["lZknuelwcrMTbo2DZGOdksFB49m0oZ/GiWhKP1j2QiA6aPhNxCXSoytx7Pqsnzh6h+HybniuTd/KN9isIlQ21Q=="]},{"auth_info":{"fee":{"amount":[],"gas_limit":"200000","granter":"","payer":""},"signer_infos":[{"mode_info":{"single":{"mode":"SIGN_MODE_DIRECT"}},"public_key":{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"AjO16g/WEBN7JIUicrjePgO72PdQq2glKbi/uRa532qR"},"sequence":"0"}]},"body":{"extension_options":[],"memo":"634cd4a67b879be0a83c3e0375cd5a3d539d9d02@7.7.7.3:26656","messages":[{"@type":"/cosmos.staking.v1beta1.MsgCreateValidator","commission":{"max_change_rate":"0.010000000000000000","max_rate":"0.200000000000000000","rate":"0.100000000000000000"},"delegator_address":"cosmos19a6z7v4hc62t267e4de74ayty05v30rv9z6xv2","description":{"details":"","identity":"","moniker":"validator3","security_contact":"","website":""},"min_self_delegation":"1","pubkey":{"@type":"/cosmos.crypto.ed25519.PubKey","key":"4H/9PySKWXSFe/FgZ+X4JZ5I67skWyzcXyAYhJ0AvrM="},"validator_address":"cosmosvaloper19a6z7v4hc62t267e4de74ayty05v30rvqkwnqe","value":{"amount":"500000000","denom":"stake"}}],"non_critical_extension_options":[],"timeout_height":"0"},"signatures":["jnKKwM7xD22q7Ri5ydsGRoQ05Rx/oB9/UMm3bXGdSyBGW7XnesChrXaPRe3vCQ6fbcCHBJAesUajNzGI4g61LQ=="]}]},"gov":{"deposit_params":{"max_deposit_period":"172800s","min_deposit":[{"amount":"10000000","denom":"stake"}]},"deposits":[],"proposals":[],"starting_proposal_id":"1","tally_params":{"quorum":"0.334000000000000000","threshold":"0.500000000000000000","veto_threshold":"0.334000000000000000"},"votes":[],"voting_params":{"voting_period":"172800s"}},"ibc":{"channel_genesis":{"ack_sequences":[],"acknowledgements":[],"channels":[],"commitments":[],"next_channel_sequence":"0","receipts":[],"recv_sequences":[],"send_sequences":[]},"client_genesis":{"clients":[],"clients_consensus":[],"clients_metadata":[],"create_localhost":false,"next_client_sequence":"0","params":{"allowed_clients":["06-solomachine","07-tendermint"]}},"connection_genesis":{"client_connection_paths":[],"connections":[],"next_connection_sequence":"0"}},"mint":{"minter":{"annual_provisions":"0.000000000000000000","inflation":"0.130000000000000000"},"params":{"blocks_per_year":"6311520","goal_bonded":"0.670000000000000000","inflation_max":"0.200000000000000000","inflation_min":"0.070000000000000000","inflation_rate_change":"0.130000000000000000","mint_denom":"stake"}},"params":null,"peggy":{"attestations":[],"batch_confirms":[],"batches":[],"delegate_keys":[],"erc20_to_denoms":[],"last_observed_nonce":"0","logic_call_confirms":[],"logic_calls":[],"params":{"average_block_time":"5000","average_ethereum_block_time":"15000","bridge_chain_id":"0","bridge_ethereum_address":"","contract_source_hash":"","peggy_id":"defaultpeggyid","signed_batches_window":"10000","signed_claims_window":"10000","signed_valsets_window":"10000","slash_fraction_batch":"0.001000000000000000","slash_fraction_claim":"0.001000000000000000","slash_fraction_conflicting_claim":"0.001000000000000000","slash_fraction_valset":"0.001000000000000000","target_batch_timeout":"43200000","unbond_slashing_valsets_window":"10000"},"unbatched_transfers":[],"valset_confirms":[],"valsets":[]},"slashing":{"missed_blocks":[],"params":{"downtime_jail_duration":"600s","min_signed_per_window":"0.500000000000000000","signed_blocks_window":"100","slash_fraction_double_sign":"0.050000000000000000","slash_fraction_downtime":"0.010000000000000000"},"signing_infos":[]},"staking":{"delegations":[],"exported":false,"last_total_power":"0","last_validator_powers":[],"params":{"bond_denom":"stake","historical_entries":10000,"max_entries":7,"max_validators":100,"unbonding_time":"1814400s"},"redelegations":[],"unbonding_delegations":[],"validators":[]},"transfer":{"denom_traces":[],"params":{"receive_enabled":true,"send_enabled":true},"port_id":"transfer"},"upgrade":{},"vesting":{}},"chain_id":"peggy-test","gentxs_dir":"/validator1/config/gentx","moniker":"validator1","node_id":"05724dc60452794d5337c8fd5a1692480217f127"}
 ++ ls /validator1/config/gentx
 ++ wc -l
 + GENTXS=3
@@ -469,24 +501,125 @@ Collected 3 gentx
 + cp /genesis.json /validator3/config/genesis.json
 ```
 
-```
+
+## 2-3.　`test-runner(Rust)`　実行
+
+### ログの見方
+- `INFO [09-10|03:04:10.481] ...` geth(Go)のログ
+- `[2021-09-10T03:04:23Z INFO  ...] ...` Rustのログ
+- `3:04AM ERR ...` peggy(Go)のログ
+
+
+```sh
 + pushd /peggy/orchestrator/test_runner
 + bash /peggy/tests/container-scripts/run-testnet.sh 3
 /peggy/orchestrator/test_runner /peggy/solidity /
 + DEPLOY_CONTRACTS=1
 + RUST_BACKTRACE=full
-+ RUST_LOG=INFO
-+ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/go/bin:/root/.cargo/bin
-+ cargo run --release --bin test-runner
 + BIN=peggy
 + NODES=3
 + set +u
 + TEST_TYPE=
 + ALCHEMY_ID=
 + set -u
++ RUST_LOG=INFO
++ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/go/bin:/root/.cargo/bin
++ cargo run --release --bin test-runner
+```
+
+### 2-3-1. `peggy start`
+
+<details>
+
+<summary>peggy help start</summary>
+
+```sh
+peggy help start
+Run the full node application with Tendermint in or out of process. By
+default, the application will run with Tendermint in process.
+
+Pruning options can be provided via the '--pruning' flag or alternatively with '--pruning-keep-recent',
+'pruning-keep-every', and 'pruning-interval' together.
+
+For '--pruning' the options are as follows:
+
+default: the last 100 states are kept in addition to every 500th state; pruning at 10 block intervals
+nothing: all historic states will be saved, nothing will be deleted (i.e. archiving node)
+everything: all saved states will be deleted, storing only the current state; pruning at 10 block intervals
+custom: allow pruning options to be manually specified through 'pruning-keep-recent', 'pruning-keep-every', and 'pruning-interval'
+
+Node halting configurations exist in the form of two flags: '--halt-height' and '--halt-time'. During
+the ABCI Commit phase, the node will check if the current block height is greater than or equal to
+the halt-height or if the current block time is greater than or equal to the halt-time. If so, the
+node will attempt to gracefully shutdown and the block will not be committed. In addition, the node
+will not be able to commit subsequent blocks.
+
+For profiling and benchmarking purposes, CPU profiling can be enabled via the '--cpu-profile' flag
+which accepts a path for the resulting pprof file.
+
+Usage:
+  peggy start [flags]
+
+Flags:
+      --abci string                                     specify abci transport (socket | grpc) (default "socket")
+      --address string                                  Listen address (default "tcp://0.0.0.0:26658")
+      --consensus.create_empty_blocks                   set this to false to only produce blocks when there are txs or when the AppHash changes (default true)
+      --consensus.create_empty_blocks_interval string   the possible interval between empty blocks (default "0s")
+      --consensus.double_sign_check_height int          how many blocks to look back to check existence of the node's consensus votes before joining consensus
+      --cpu-profile string                              Enable CPU profiling and write to the provided file
+      --db_backend string                               database backend: goleveldb | cleveldb | boltdb | rocksdb | badgerdb (default "goleveldb")
+      --db_dir string                                   database directory (default "data")
+      --fast_sync                                       fast blockchain syncing (default true)
+      --genesis_hash bytesHex                           optional SHA-256 hash of the genesis file
+      --grpc.address string                             the gRPC server address to listen on (default "0.0.0.0:9090")
+      --grpc.enable                                     Define if the gRPC server should be enabled (default true)
+      --halt-height uint                                Block height at which to gracefully halt the chain and shutdown the node
+      --halt-time uint                                  Minimum block time (in Unix seconds) at which to gracefully halt the chain and shutdown the node
+  -h, --help                                            help for start
+      --inter-block-cache                               Enable inter-block caching (default true)
+      --inv-check-period uint                           Assert registered invariants every N blocks
+      --min-retain-blocks uint                          Minimum block height offset during ABCI commit to prune Tendermint blocks
+      --minimum-gas-prices string                       Minimum gas prices to accept for transactions; Any fee in a tx must meet this minimum (e.g. 0.01photino;0.0001stake)
+      --moniker string                                  node name (default "Apple365")
+      --p2p.laddr string                                node listen address. (0.0.0.0:0 means any interface, any port) (default "tcp://0.0.0.0:26656")
+      --p2p.persistent_peers string                     comma-delimited ID@host:port persistent peers
+      --p2p.pex                                         enable/disable Peer-Exchange (default true)
+      --p2p.private_peer_ids string                     comma-delimited private peer IDs
+      --p2p.seed_mode                                   enable/disable seed mode
+      --p2p.seeds string                                comma-delimited ID@host:port seed nodes
+      --p2p.unconditional_peer_ids string               comma-delimited IDs of unconditional peers
+      --p2p.upnp                                        enable/disable UPNP port forwarding
+      --priv_validator_laddr string                     socket address to listen on for connections from external priv_validator process
+      --proxy_app string                                proxy app address, or one of: 'kvstore', 'persistent_kvstore', 'counter', 'counter_serial' or 'noop' for local testing. (default "tcp://127.0.0.1:26658")
+      --pruning string                                  Pruning strategy (default|nothing|everything|custom) (default "default")
+      --pruning-interval uint                           Height interval at which pruned heights are removed from disk (ignored if pruning is not 'custom')
+      --pruning-keep-every uint                         Offset heights to keep on disk after 'keep-every' (ignored if pruning is not 'custom')
+      --pruning-keep-recent uint                        Number of recent heights to keep on disk (ignored if pruning is not 'custom')
+      --rpc.grpc_laddr string                           GRPC listen address (BroadcastTx only). Port required
+      --rpc.laddr string                                RPC listen address. Port required (default "tcp://127.0.0.1:26657")
+      --rpc.pprof_laddr string                          pprof listen address (https://golang.org/pkg/net/http/pprof)
+      --rpc.unsafe                                      enabled unsafe rpc methods
+      --state-sync.snapshot-interval uint               State sync snapshot interval
+      --state-sync.snapshot-keep-recent uint32          State sync snapshot to keep (default 2)
+      --trace-store string                              Enable KVStore tracing to an output file
+      --transport string                                Transport protocol: socket, grpc (default "socket")
+      --unsafe-skip-upgrades ints                       Skip a set of upgrade heights to continue the old binary
+      --with-tendermint                                 Run abci app embedded in-process with tendermint (default true)
+      --x-crisis-skip-assert-invariants                 Skip x/crisis invariants check on startup
+
+Global Flags:
+      --home string        directory for config and data (default "$HOME/.peggy")
+      --log_level string   The logging level in the format of <module>:<level>,... (default "info")
+      --trace              print out full stack trace on errors
+```
+
+</details>
+
+```sh
 ++ seq 1 3
 + for i in $(seq 1 $NODES)
 + ip addr add 7.7.7.1/32 dev eth0
+
 + GAIA_HOME='--home /validator1'
 + [[ 1 -eq 1 ]]
 + RPC_ADDRESS='--rpc.laddr tcp://0.0.0.0:26657'
@@ -498,6 +631,7 @@ Collected 3 gentx
 + for i in $(seq 1 $NODES)
 + ip addr add 7.7.7.2/32 dev eth0
 + peggy --home /validator1 --address tcp://7.7.7.1:26655 --rpc.laddr tcp://0.0.0.0:26657 --grpc.address 0.0.0.0:9090 --log_level error --p2p.laddr tcp://7.7.7.1:26656 start
+
 + GAIA_HOME='--home /validator2'
 + [[ 2 -eq 1 ]]
 + RPC_ADDRESS='--rpc.laddr tcp://7.7.7.2:26658'
@@ -508,6 +642,8 @@ Collected 3 gentx
 + ARGS='--home /validator2 --address tcp://7.7.7.2:26655 --rpc.laddr tcp://7.7.7.2:26658 --grpc.address 7.7.7.2:9091 --log_level error --p2p.laddr tcp://7.7.7.2:26656'
 + for i in $(seq 1 $NODES)
 + ip addr add 7.7.7.3/32 dev eth0
++ peggy --home /validator2 --address tcp://7.7.7.2:26655 --rpc.laddr tcp://7.7.7.2:26658 --grpc.address 7.7.7.2:9091 --log_level error --p2p.laddr tcp://7.7.7.2:26656 start
+
 + GAIA_HOME='--home /validator3'
 + [[ 3 -eq 1 ]]
 + RPC_ADDRESS='--rpc.laddr tcp://7.7.7.3:26658'
@@ -517,11 +653,10 @@ Collected 3 gentx
 + LOG_LEVEL='--log_level error'
 + ARGS='--home /validator3 --address tcp://7.7.7.3:26655 --rpc.laddr tcp://7.7.7.3:26658 --grpc.address 7.7.7.3:9091 --log_level error --p2p.laddr tcp://7.7.7.3:26656'
 + sleep 10
-+ peggy --home /validator2 --address tcp://7.7.7.2:26655 --rpc.laddr tcp://7.7.7.2:26658 --grpc.address 7.7.7.2:9091 --log_level error --p2p.laddr tcp://7.7.7.2:26656 start
 + peggy --home /validator3 --address tcp://7.7.7.3:26655 --rpc.laddr tcp://7.7.7.3:26658 --grpc.address 7.7.7.3:9091 --log_level error --p2p.laddr tcp://7.7.7.3:26656 start
-3:17AM ERR pprof server error err="listen tcp 127.0.0.1:6060: bind: address already in use"
-3:17AM ERR pprof server error err="listen tcp 127.0.0.1:6060: bind: address already in use"
-3:17AM ERR dialing failed (attempts: 1): dial tcp 7.7.7.3:26656: connect: connection refused addr={"id":"eff68f5b8de54b31989ed05d714cf12d97a05071","ip":"7.7.7.3","port":26656} module=pex
+
+3:04AM ERR pprof server error err="listen tcp 127.0.0.1:6060: bind: address already in use"
+3:04AM ERR pprof server error err="listen tcp 127.0.0.1:6060: bind: address already in use"
 warning: unused variable: `input`
    --> peggy_utils/src/types/ethereum_events.rs:442:21
     |
@@ -542,43 +677,48 @@ warning: unused variable: `grpc_client`
 
 warning: 1 warning emitted
 
-    Finished release [optimized] target(s) in 2.23s
+    Finished release [optimized] target(s) in 1.82s
      Running `/peggy/orchestrator/target/release/test-runner`
-[2021-09-09T03:17:45Z INFO  test_runner] Staring Peggy test-runner
-[2021-09-09T03:17:45Z INFO  test_runner] Waiting for Cosmos chain to come online
+[2021-09-10T03:04:02Z INFO  test_runner] Staring Peggy test-runner
+[2021-09-10T03:04:02Z INFO  test_runner] Waiting for Cosmos chain to come online
 + [[ '' == *\A\R\B\I\T\R\A\R\Y\_\L\O\G\I\C* ]]
 + sleep 10
+```
+
+## 2-4. `geth` 起動
+
+```
 + bash /peggy/tests/container-scripts/run-eth.sh
-INFO [09-09|03:17:53.218] Maximum peer count                       ETH=50 LES=0 total=50
-INFO [09-09|03:17:53.229] Smartcard socket not found, disabling    err="stat /run/pcscd/pcscd.comm: no such file or directory"
-INFO [09-09|03:17:53.232] Set global gas cap                       cap=25000000
-INFO [09-09|03:17:53.240] Allocated cache and file handles         database=/root/.ethereum/geth/chaindata cache=16.00MiB handles=16
-INFO [09-09|03:17:53.299] Writing custom genesis block 
-INFO [09-09|03:17:53.304] Persisted trie from memory database      nodes=1 size=150.00B time="349.7µs" gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B
-INFO [09-09|03:17:53.310] Successfully wrote genesis state         database=chaindata                      hash="1d4e59…faac29"
-INFO [09-09|03:17:53.311] Allocated cache and file handles         database=/root/.ethereum/geth/lightchaindata cache=16.00MiB handles=16
-INFO [09-09|03:17:53.326] Writing custom genesis block 
-INFO [09-09|03:17:53.328] Persisted trie from memory database      nodes=1 size=150.00B time="234.3µs" gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B
-INFO [09-09|03:17:53.331] Successfully wrote genesis state         database=lightchaindata                      hash="1d4e59…faac29"
-[2021-09-09T03:18:06Z INFO  test_runner] test-runner in contract deploying mode, deploying contracts, then exiting
-[2021-09-09T03:18:06Z INFO  test_runner::bootstrapping] Signing and submitting Delegate addresses 0x233A784C6FAf3FE8Ce07eC9868B44dFfC5b52089 for validator cosmos1lna3043fuv6p8fnskxs2q7jufzpyzemly5y9as
-[2021-09-09T03:18:06Z INFO  test_runner::bootstrapping] Signing and submitting Delegate addresses 0xB8881BFc542611Ae69bb947b8A954dFED0a7D1Dd for validator cosmos1vdc2frekew3caavwcvk0pg2uztec4mu8vh9gek
-[2021-09-09T03:18:06Z INFO  test_runner::bootstrapping] Signing and submitting Delegate addresses 0x734C2d60EFCCae1ed0Eb85E2242a2F33F41450E3 for validator cosmos1nqxw98f0wj2grcvfw9pa2w6307untq5v5xqtyv
-3:18AM ERR dialing failed (attempts: 1): auth failure: secret conn failed: EOF addr={"id":"eff68f5b8de54b31989ed05d714cf12d97a05071","ip":"7.7.7.3","port":26656} module=pex
-3:18AM ERR dialing failed (attempts: 1): auth failure: secret conn failed: EOF addr={"id":"56880a24b86653602831e4f7f00883546bdbc4a9","ip":"7.7.7.2","port":26656} module=pex
-3:19AM ERR dialing failed (attempts: 2): auth failure: secret conn failed: EOF addr={"id":"eff68f5b8de54b31989ed05d714cf12d97a05071","ip":"7.7.7.3","port":26656} module=pex
-3:19AM ERR dialing failed (attempts: 2): auth failure: secret conn failed: EOF addr={"id":"56880a24b86653602831e4f7f00883546bdbc4a9","ip":"7.7.7.2","port":26656} module=pex
-3:19AM ERR dialing failed (attempts: 3): auth failure: secret conn failed: EOF addr={"id":"eff68f5b8de54b31989ed05d714cf12d97a05071","ip":"7.7.7.3","port":26656} module=pex
-3:19AM ERR dialing failed (attempts: 3): auth failure: secret conn failed: EOF addr={"id":"56880a24b86653602831e4f7f00883546bdbc4a9","ip":"7.7.7.2","port":26656} module=pex
-3:20AM ERR dialing failed (attempts: 4): auth failure: secret conn failed: EOF addr={"id":"eff68f5b8de54b31989ed05d714cf12d97a05071","ip":"7.7.7.3","port":26656} module=pex
-3:20AM ERR dialing failed (attempts: 4): auth failure: secret conn failed: EOF addr={"id":"56880a24b86653602831e4f7f00883546bdbc4a9","ip":"7.7.7.2","port":26656} module=pex
-3:20AM ERR dialing failed (attempts: 5): auth failure: secret conn failed: read tcp 7.7.7.3:51736->7.7.7.3:26656: read: connection reset by peer addr={"id":"eff68f5b8de54b31989ed05d714cf12d97a05071","ip":"7.7.7.3","port":26656} module=pex
-3:20AM ERR dialing failed (attempts: 5): auth failure: secret conn failed: EOF addr={"id":"56880a24b86653602831e4f7f00883546bdbc4a9","ip":"7.7.7.2","port":26656} module=pex
-3:21AM ERR dialing failed (attempts: 6): auth failure: secret conn failed: read tcp 7.7.7.3:51860->7.7.7.3:26656: read: connection reset by peer addr={"id":"eff68f5b8de54b31989ed05d714cf12d97a05071","ip":"7.7.7.3","port":26656} module=pex
-3:21AM ERR dialing failed (attempts: 6): auth failure: secret conn failed: read tcp 7.7.7.2:35546->7.7.7.2:26656: read: connection reset by peer addr={"id":"56880a24b86653602831e4f7f00883546bdbc4a9","ip":"7.7.7.2","port":26656} module=pex
-3:23AM ERR dialing failed (attempts: 7): auth failure: secret conn failed: read tcp 7.7.7.3:52076->7.7.7.3:26656: read: connection reset by peer addr={"id":"eff68f5b8de54b31989ed05d714cf12d97a05071","ip":"7.7.7.3","port":26656} module=pex
-3:23AM ERR dialing failed (attempts: 7): auth failure: secret conn failed: EOF addr={"id":"56880a24b86653602831e4f7f00883546bdbc4a9","ip":"7.7.7.2","port":26656} module=pex
-[2021-09-09T03:23:59Z INFO  test_runner::bootstrapping] stdout: Test mode, deploying ERC20 contracts
+INFO [09-10|03:04:10.481] Maximum peer count                       ETH=50 LES=0 total=50
+INFO [09-10|03:04:10.481] Smartcard socket not found, disabling    err="stat /run/pcscd/pcscd.comm: no such file or directory"
+INFO [09-10|03:04:10.484] Set global gas cap                       cap=25000000
+INFO [09-10|03:04:10.491] Allocated cache and file handles         database=/root/.ethereum/geth/chaindata cache=16.00MiB handles=16
+INFO [09-10|03:04:10.527] Writing custom genesis block
+INFO [09-10|03:04:10.528] Persisted trie from memory database      nodes=1 size=150.00B time="112.078µs" gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B
+INFO [09-10|03:04:10.530] Successfully wrote genesis state         database=chaindata                      hash="1d4e59…faac29"
+INFO [09-10|03:04:10.531] Allocated cache and file handles         database=/root/.ethereum/geth/lightchaindata cache=16.00MiB handles=16
+INFO [09-10|03:04:10.539] Writing custom genesis block
+INFO [09-10|03:04:10.540] Persisted trie from memory database      nodes=1 size=150.00B time="85.29µs"   gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B
+INFO [09-10|03:04:10.541] Successfully wrote genesis state         database=lightchaindata                      hash="1d4e59…faac29"
+[2021-09-10T03:04:23Z INFO  test_runner] test-runner in contract deploying mode, deploying contracts, then exiting
+[2021-09-10T03:04:23Z INFO  test_runner::bootstrapping] Signing and submitting Delegate addresses 0x8Cc75e50CC0c9Dd190389e8aBEe80Dd60e38cE43 for validator cosmos1a42emzmx2e8c2668u2taq8d3cwdvr5nc086y6u
+[2021-09-10T03:04:23Z INFO  test_runner::bootstrapping] Signing and submitting Delegate addresses 0xC233c8461f1ae3c7019bd3F90feD64c729d4a987 for validator cosmos1g440atgq8ln6fdaghpt6frwxtve8kaguhxg27l
+[2021-09-10T03:04:23Z INFO  test_runner::bootstrapping] Signing and submitting Delegate addresses 0x6148DDC228Ed6Ea07fEaFE6414016f774D4fa849 for validator cosmos19a6z7v4hc62t267e4de74ayty05v30rv9z6xv2
+3:05AM ERR dialing failed (attempts: 1): auth failure: secret conn failed: EOF addr={"id":"634cd4a67b879be0a83c3e0375cd5a3d539d9d02","ip":"7.7.7.3","port":26656} module=pex
+3:05AM ERR dialing failed (attempts: 1): auth failure: secret conn failed: EOF addr={"id":"47f6c6c8798fb47e3368364bc348b0ae04a89e8a","ip":"7.7.7.2","port":26656} module=pex
+3:05AM ERR dialing failed (attempts: 2): auth failure: secret conn failed: EOF addr={"id":"634cd4a67b879be0a83c3e0375cd5a3d539d9d02","ip":"7.7.7.3","port":26656} module=pex
+3:05AM ERR dialing failed (attempts: 2): auth failure: secret conn failed: read tcp 7.7.7.2:37714->7.7.7.2:26656: read: connection reset by peer addr={"id":"47f6c6c8798fb47e3368364bc348b0ae04a89e8a","ip":"7.7.7.2","port":26656} module=pex
+3:06AM ERR dialing failed (attempts: 3): auth failure: secret conn failed: EOF addr={"id":"634cd4a67b879be0a83c3e0375cd5a3d539d9d02","ip":"7.7.7.3","port":26656} module=pex
+3:06AM ERR dialing failed (attempts: 3): auth failure: secret conn failed: EOF addr={"id":"47f6c6c8798fb47e3368364bc348b0ae04a89e8a","ip":"7.7.7.2","port":26656} module=pex
+3:06AM ERR dialing failed (attempts: 4): auth failure: secret conn failed: EOF addr={"id":"634cd4a67b879be0a83c3e0375cd5a3d539d9d02","ip":"7.7.7.3","port":26656} module=pex
+3:06AM ERR dialing failed (attempts: 4): auth failure: secret conn failed: read tcp 7.7.7.2:37834->7.7.7.2:26656: read: connection reset by peer addr={"id":"47f6c6c8798fb47e3368364bc348b0ae04a89e8a","ip":"7.7.7.2","port":26656} module=pex
+3:07AM ERR dialing failed (attempts: 5): auth failure: secret conn failed: EOF addr={"id":"634cd4a67b879be0a83c3e0375cd5a3d539d9d02","ip":"7.7.7.3","port":26656} module=pex
+3:07AM ERR dialing failed (attempts: 5): auth failure: secret conn failed: EOF addr={"id":"47f6c6c8798fb47e3368364bc348b0ae04a89e8a","ip":"7.7.7.2","port":26656} module=pex
+3:08AM ERR dialing failed (attempts: 6): auth failure: secret conn failed: EOF addr={"id":"634cd4a67b879be0a83c3e0375cd5a3d539d9d02","ip":"7.7.7.3","port":26656} module=pex
+3:08AM ERR dialing failed (attempts: 6): auth failure: secret conn failed: read tcp 7.7.7.2:38024->7.7.7.2:26656: read: connection reset by peer addr={"id":"47f6c6c8798fb47e3368364bc348b0ae04a89e8a","ip":"7.7.7.2","port":26656} module=pex
+3:09AM ERR dialing failed (attempts: 7): auth failure: secret conn failed: EOF addr={"id":"634cd4a67b879be0a83c3e0375cd5a3d539d9d02","ip":"7.7.7.3","port":26656} module=pex
+3:09AM ERR dialing failed (attempts: 7): auth failure: secret conn failed: EOF addr={"id":"47f6c6c8798fb47e3368364bc348b0ae04a89e8a","ip":"7.7.7.2","port":26656} module=pex
+[2021-09-10T03:11:01Z INFO  test_runner::bootstrapping] stdout: Test mode, deploying ERC20 contracts
     ERC20 deployed at Address -  0x0412C7c846bb6b7DC462CF6B453f76D8440b2609
     ERC20 deployed at Address -  0x30dA8589BFa1E509A319489E014d384b87815D89
     ERC20 deployed at Address -  0x9676519d99E390A180Ab1445d5d857E3f6869065
@@ -588,27 +728,27 @@ INFO [09-09|03:17:53.331] Successfully wrote genesis state         database=ligh
     {
       "type": "peggy/Valset",
       "value": {
-        "nonce": "64",
+        "nonce": "74",
         "members": [
           {
             "power": "1431655765",
-            "ethereum_address": "0x233A784C6FAf3FE8Ce07eC9868B44dFfC5b52089"
+            "ethereum_address": "0x6148DDC228Ed6Ea07fEaFE6414016f774D4fa849"
           },
           {
             "power": "1431655765",
-            "ethereum_address": "0x734C2d60EFCCae1ed0Eb85E2242a2F33F41450E3"
+            "ethereum_address": "0x8Cc75e50CC0c9Dd190389e8aBEe80Dd60e38cE43"
           },
           {
             "power": "1431655765",
-            "ethereum_address": "0xB8881BFc542611Ae69bb947b8A954dFED0a7D1Dd"
+            "ethereum_address": "0xC233c8461f1ae3c7019bd3F90feD64c729d4a987"
           }
         ],
-        "height": "64"
+        "height": "74"
       }
     }
     Peggy deployed at Address -  0x7580bFE88Dd3d07947908FAE12d95872a260F2D8
-    
-[2021-09-09T03:23:59Z INFO  test_runner::bootstrapping] stderr: 
+
+[2021-09-10T03:11:02Z INFO  test_runner::bootstrapping] stderr:
 + bash /peggy/tests/container-scripts/integration-tests.sh 3
 Contracts already deployed, running tests
 test-runner: no process found
@@ -633,362 +773,143 @@ warning: unused variable: `grpc_client`
 
 warning: 1 warning emitted
 
-    Finished release [optimized] target(s) in 1.69s
+    Finished release [optimized] target(s) in 2.11s
      Running `/peggy/orchestrator/target/release/test-runner`
-[2021-09-09T03:24:02Z INFO  test_runner] Staring Peggy test-runner
-[2021-09-09T03:24:02Z INFO  test_runner] Waiting for Cosmos chain to come online
-[2021-09-09T03:24:18Z INFO  test_runner::utils] Sending orchestrators 100 eth to pay for fees miner has 23229348 ETH
-[2021-09-09T03:24:28Z INFO  test_runner] Starting tests with Ok("")
-[2021-09-09T03:24:28Z INFO  test_runner] Starting Happy path test
-[2021-09-09T03:24:28Z INFO  test_runner::happy_path] Spawning Orchestrator
-[2021-09-09T03:24:28Z INFO  orchestrator::oracle_resync] Oracle is resyncing, looking back into the history to find our last event nonce 1, on block 15
-[2021-09-09T03:24:28Z INFO  test_runner::happy_path] Spawning Orchestrator
-[2021-09-09T03:24:28Z INFO  test_runner::happy_path] Spawning Orchestrator
-[2021-09-09T03:24:28Z INFO  orchestrator::oracle_resync] Oracle is resyncing, looking back into the history to find our last event nonce 1, on block 15
-[2021-09-09T03:24:28Z INFO  orchestrator::main_loop] Oracle resync complete, Oracle now operational
-[2021-09-09T03:24:29Z INFO  orchestrator::main_loop] Sending 5 valset confirms starting with 5
-[2021-09-09T03:24:29Z INFO  orchestrator::oracle_resync] Oracle is resyncing, looking back into the history to find our last event nonce 1, on block 15
-[2021-09-09T03:24:29Z INFO  orchestrator::main_loop] Sending 5 valset confirms starting with 5
-[2021-09-09T03:24:29Z INFO  orchestrator::main_loop] Oracle resync complete, Oracle now operational
-[2021-09-09T03:24:29Z INFO  test_runner::happy_path] Sending in valset request
-[2021-09-09T03:24:29Z INFO  test_runner::happy_path] Delegating 125000000stake to cosmosvaloper1vdc2frekew3caavwcvk0pg2uztec4mu8fr3a49 in order to generate a validator set update
-[2021-09-09T03:24:30Z INFO  orchestrator::main_loop] Sending 5 valset confirms starting with 5
-[2021-09-09T03:24:30Z INFO  orchestrator::main_loop] Oracle resync complete, Oracle now operational
-[2021-09-09T03:24:30Z ERROR relayer::valset_relaying] We don't have a latest confirmed valset?
-[2021-09-09T03:24:30Z ERROR relayer::valset_relaying] We don't have a latest confirmed valset?
-[2021-09-09T03:24:30Z ERROR relayer::valset_relaying] We don't have a latest confirmed valset?
-[2021-09-09T03:24:40Z INFO  orchestrator::main_loop] Sending 1 valset confirms starting with 74
-[2021-09-09T03:24:40Z INFO  orchestrator::main_loop] Sending 1 valset confirms starting with 74
-[2021-09-09T03:24:40Z INFO  orchestrator::main_loop] Sending 1 valset confirms starting with 74
-[2021-09-09T03:24:45Z INFO  test_runner::happy_path] stdout: {"height":"74","txhash":"0ADE4D4E34E08CAAB54D84A8BF5EE9DB2C19449DC89E92DB274D326F8372DE1E","codespace":"","code":0,"data":"0A0A0A0864656C6567617465","raw_log":"[{\"events\":[{\"type\":\"delegate\",\"attributes\":[{\"key\":\"validator\",\"value\":\"cosmosvaloper1vdc2frekew3caavwcvk0pg2uztec4mu8fr3a49\"},{\"key\":\"amount\",\"value\":\"125000000\"}]},{\"type\":\"message\",\"attributes\":[{\"key\":\"action\",\"value\":\"delegate\"},{\"key\":\"module\",\"value\":\"staking\"},{\"key\":\"sender\",\"value\":\"cosmos1lna3043fuv6p8fnskxs2q7jufzpyzemly5y9as\"}]}]}]","logs":[{"msg_index":0,"log":"","events":[{"type":"delegate","attributes":[{"key":"validator","value":"cosmosvaloper1vdc2frekew3caavwcvk0pg2uztec4mu8fr3a49"},{"key":"amount","value":"125000000"}]},{"type":"message","attributes":[{"key":"action","value":"delegate"},{"key":"module","value":"staking"},{"key":"sender","value":"cosmos1lna3043fuv6p8fnskxs2q7jufzpyzemly5y9as"}]}]}],"info":"","gas_wanted":"200000","gas_used":"98701","tx":null,"timestamp":""}
-    
-[2021-09-09T03:24:45Z INFO  test_runner::happy_path] stderr: 
-[2021-09-09T03:24:45Z INFO  test_runner::happy_path] Validator set is not yet updated to 0>, waiting
-[2021-09-09T03:24:46Z INFO  relayer::valset_relaying] We have detected latest valset 74 but latest on Ethereum is 0 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
-[2021-09-09T03:24:46Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 0 -> 74 update to Ethereum
-[2021-09-09T03:24:46Z INFO  relayer::valset_relaying] We have detected latest valset 74 but latest on Ethereum is 0 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
-[2021-09-09T03:24:46Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 0 -> 74 update to Ethereum
-[2021-09-09T03:24:46Z INFO  relayer::valset_relaying] We have detected latest valset 5 but latest on Ethereum is 0 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
-[2021-09-09T03:24:46Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 0 -> 5 update to Ethereum
-[2021-09-09T03:24:46Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0x7d014754d148c275e9a6080dcf64b32f187d9984785ce4bdc1e4bb00f021cfba
-[2021-09-09T03:24:46Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0xbb83f4efe22bc3b399b7f83abc8ffcfaee495c9af368900ed326dde887b5bc68
-[2021-09-09T03:24:46Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0xb20eb75c001562195a7db971fe285ab300c2d29dcb0a3fc88e127adb8ea9c817
-[2021-09-09T03:24:49Z INFO  test_runner::happy_path] Validator set is not yet updated to 0>, waiting
-[2021-09-09T03:24:51Z INFO  ethereum_peggy::valset_update] Successfully updated Valset with new Nonce 74
-[2021-09-09T03:24:51Z INFO  ethereum_peggy::valset_update] Successfully updated Valset with new Nonce 74
-[2021-09-09T03:24:52Z ERROR ethereum_peggy::valset_update] Current nonce is 74 expected to update to nonce 5
-[2021-09-09T03:24:53Z INFO  test_runner::happy_path] Validator set is not yet updated to 0>, waiting
-[2021-09-09T03:24:57Z INFO  test_runner::happy_path] Validator set successfully updated!
-[2021-09-09T03:24:57Z INFO  test_runner::happy_path] Sending in valset request
-[2021-09-09T03:24:57Z INFO  test_runner::happy_path] Delegating 125000000stake to cosmosvaloper1lna3043fuv6p8fnskxs2q7jufzpyzemlpqss3r in order to generate a validator set update
-[2021-09-09T03:25:02Z INFO  test_runner::happy_path] stdout: {"height":"78","txhash":"C713C25E015BC27F86631E43CD0EDD1CE7D0E4D6DECB4FE0A657323EAD662FF5","codespace":"","code":0,"data":"0A0A0A0864656C6567617465","raw_log":"[{\"events\":[{\"type\":\"delegate\",\"attributes\":[{\"key\":\"validator\",\"value\":\"cosmosvaloper1lna3043fuv6p8fnskxs2q7jufzpyzemlpqss3r\"},{\"key\":\"amount\",\"value\":\"125000000\"}]},{\"type\":\"message\",\"attributes\":[{\"key\":\"action\",\"value\":\"delegate\"},{\"key\":\"sender\",\"value\":\"cosmos1jv65s3grqf6v6jl3dp4t6c9t9rk99cd88lyufl\"},{\"key\":\"module\",\"value\":\"staking\"},{\"key\":\"sender\",\"value\":\"cosmos1lna3043fuv6p8fnskxs2q7jufzpyzemly5y9as\"}]},{\"type\":\"transfer\",\"attributes\":[{\"key\":\"recipient\",\"value\":\"cosmos1lna3043fuv6p8fnskxs2q7jufzpyzemly5y9as\"},{\"key\":\"sender\",\"value\":\"cosmos1jv65s3grqf6v6jl3dp4t6c9t9rk99cd88lyufl\"},{\"key\":\"amount\",\"value\":\"2footoken,14094stake\"}]}]}]","logs":[{"msg_index":0,"log":"","events":[{"type":"delegate","attributes":[{"key":"validator","value":"cosmosvaloper1lna3043fuv6p8fnskxs2q7jufzpyzemlpqss3r"},{"key":"amount","value":"125000000"}]},{"type":"message","attributes":[{"key":"action","value":"delegate"},{"key":"sender","value":"cosmos1jv65s3grqf6v6jl3dp4t6c9t9rk99cd88lyufl"},{"key":"module","value":"staking"},{"key":"sender","value":"cosmos1lna3043fuv6p8fnskxs2q7jufzpyzemly5y9as"}]},{"type":"transfer","attributes":[{"key":"recipient","value":"cosmos1lna3043fuv6p8fnskxs2q7jufzpyzemly5y9as"},{"key":"sender","value":"cosmos1jv65s3grqf6v6jl3dp4t6c9t9rk99cd88lyufl"},{"key":"amount","value":"2footoken,14094stake"}]}]}],"info":"","gas_wanted":"200000","gas_used":"137119","tx":null,"timestamp":""}
-    
-[2021-09-09T03:25:02Z INFO  test_runner::happy_path] stderr: 
-[2021-09-09T03:25:02Z INFO  orchestrator::main_loop] Sending 1 valset confirms starting with 78
-[2021-09-09T03:25:02Z INFO  test_runner::happy_path] Validator set is not yet updated to 74>, waiting
-[2021-09-09T03:25:02Z INFO  orchestrator::main_loop] Sending 1 valset confirms starting with 78
-[2021-09-09T03:25:02Z INFO  orchestrator::main_loop] Sending 1 valset confirms starting with 78
-[2021-09-09T03:25:06Z INFO  test_runner::happy_path] Validator set is not yet updated to 74>, waiting
-[2021-09-09T03:25:10Z INFO  test_runner::happy_path] Validator set is not yet updated to 74>, waiting
-[2021-09-09T03:25:14Z INFO  test_runner::happy_path] Validator set is not yet updated to 74>, waiting
-[2021-09-09T03:25:18Z INFO  test_runner::happy_path] Validator set is not yet updated to 74>, waiting
-[2021-09-09T03:25:20Z INFO  relayer::valset_relaying] We have detected latest valset 78 but latest on Ethereum is 74 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
-[2021-09-09T03:25:20Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 74 -> 78 update to Ethereum
-[2021-09-09T03:25:20Z INFO  relayer::valset_relaying] We have detected latest valset 78 but latest on Ethereum is 74 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
-[2021-09-09T03:25:20Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 74 -> 78 update to Ethereum
-[2021-09-09T03:25:20Z INFO  relayer::valset_relaying] We have detected latest valset 78 but latest on Ethereum is 74 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
-[2021-09-09T03:25:20Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 74 -> 78 update to Ethereum
-[2021-09-09T03:25:20Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0xee5bfb8a1dfd755a08d6793e8d3f6acba51f5d6d802ff588715e572210c5a41a
-[2021-09-09T03:25:20Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0x76eb95fbdebb3eeb5aace17ee9ebad7db7f887bff0f0150112463fb560940dbc
-[2021-09-09T03:25:20Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0x898d4575567002a423325281298fa6d37b326071949d34964d89a0a84ba68791
-[2021-09-09T03:25:21Z INFO  ethereum_peggy::valset_update] Successfully updated Valset with new Nonce 78
-[2021-09-09T03:25:21Z INFO  ethereum_peggy::valset_update] Successfully updated Valset with new Nonce 78
-[2021-09-09T03:25:21Z INFO  ethereum_peggy::valset_update] Successfully updated Valset with new Nonce 78
-[2021-09-09T03:25:23Z INFO  test_runner::happy_path] Validator set is not yet updated to 74>, waiting
-[2021-09-09T03:25:27Z INFO  test_runner::happy_path] Validator set successfully updated!
-[2021-09-09T03:25:27Z INFO  test_runner::happy_path] Sending to Cosmos from 0xBf660843528035a5A4921534E156a27e64B231fE to cosmos1ry437cqvlexdq3mwhv8lnr6mmejx5r5dvhxwy9 with amount 100
-3:25AM ERR dialing failed (attempts: 8): auth failure: secret conn failed: EOF addr={"id":"eff68f5b8de54b31989ed05d714cf12d97a05071","ip":"7.7.7.3","port":26656} module=pex
-3:25AM ERR dialing failed (attempts: 8): auth failure: secret conn failed: EOF addr={"id":"56880a24b86653602831e4f7f00883546bdbc4a9","ip":"7.7.7.2","port":26656} module=pex
-[2021-09-09T03:25:56Z INFO  test_runner::happy_path] Send to Cosmos txid: 0x7bf33f9620d415d13e234526414d2c01ce987c31233d86c7afdbfed6f491f136
-[2021-09-09T03:25:56Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
-[2021-09-09T03:25:57Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
-[2021-09-09T03:26:00Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ry437cqvlexdq3mwhv8lnr6mmejx5r5dvhxwy9, amount 100, and event nonce 1
-[2021-09-09T03:26:00Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ry437cqvlexdq3mwhv8lnr6mmejx5r5dvhxwy9, amount 100, and event nonce 1
-[2021-09-09T03:26:01Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ry437cqvlexdq3mwhv8lnr6mmejx5r5dvhxwy9, amount 100, and event nonce 1
-[2021-09-09T03:26:02Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
-[2021-09-09T03:26:02Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 1
-[2021-09-09T03:26:02Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 1
-[2021-09-09T03:26:02Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 1
-[2021-09-09T03:26:08Z INFO  test_runner::happy_path] Successfully bridged ERC20 100peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609 to Cosmos! Balance is now 100peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609
-[2021-09-09T03:26:08Z INFO  test_runner::happy_path] Sending to Cosmos from 0xBf660843528035a5A4921534E156a27e64B231fE to cosmos1ry437cqvlexdq3mwhv8lnr6mmejx5r5dvhxwy9 with amount 100
-[2021-09-09T03:26:10Z INFO  test_runner::happy_path] Send to Cosmos txid: 0x9db61541196cda4b7fcff419c5f4072b505991dc13e1f2cc8de0fe61eced5b43
-[2021-09-09T03:26:10Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
-[2021-09-09T03:26:13Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ry437cqvlexdq3mwhv8lnr6mmejx5r5dvhxwy9, amount 100, and event nonce 2
-[2021-09-09T03:26:13Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ry437cqvlexdq3mwhv8lnr6mmejx5r5dvhxwy9, amount 100, and event nonce 2
-[2021-09-09T03:26:14Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
-[2021-09-09T03:26:14Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ry437cqvlexdq3mwhv8lnr6mmejx5r5dvhxwy9, amount 100, and event nonce 2
-[2021-09-09T03:26:18Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 2
-[2021-09-09T03:26:18Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 2
-[2021-09-09T03:26:18Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 2
-[2021-09-09T03:26:19Z INFO  test_runner::happy_path] Successfully bridged ERC20 100peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609 to Cosmos! Balance is now 200peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609
-[2021-09-09T03:26:19Z INFO  test_runner::happy_path] Sending to Cosmos from 0xBf660843528035a5A4921534E156a27e64B231fE to cosmos1ry437cqvlexdq3mwhv8lnr6mmejx5r5dvhxwy9 with amount 100
-[2021-09-09T03:26:28Z INFO  test_runner::happy_path] Send to Cosmos txid: 0x033e6b1b3176b9530afd237ccf5ff18c0a58bac9b7e81187accb2ebc71c40b52
-[2021-09-09T03:26:28Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
-[2021-09-09T03:26:30Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
-[2021-09-09T03:26:35Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
-[2021-09-09T03:26:39Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ry437cqvlexdq3mwhv8lnr6mmejx5r5dvhxwy9, amount 100, and event nonce 3
-[2021-09-09T03:26:39Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ry437cqvlexdq3mwhv8lnr6mmejx5r5dvhxwy9, amount 100, and event nonce 3
-[2021-09-09T03:26:40Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ry437cqvlexdq3mwhv8lnr6mmejx5r5dvhxwy9, amount 100, and event nonce 3
-[2021-09-09T03:26:40Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
-[2021-09-09T03:26:40Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 3
-[2021-09-09T03:26:40Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 3
-[2021-09-09T03:26:46Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 3
-[2021-09-09T03:26:46Z INFO  test_runner::happy_path] Successfully bridged ERC20 100peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609 to Cosmos! Balance is now 300peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609
-[2021-09-09T03:27:02Z INFO  test_runner::happy_path] Successfully failed to duplicate ERC20!
-[2021-09-09T03:27:02Z INFO  test_runner::happy_path] Sending 295peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609 from cosmos1ry437cqvlexdq3mwhv8lnr6mmejx5r5dvhxwy9 on Cosmos back to Ethereum
-[2021-09-09T03:27:07Z INFO  test_runner::happy_path] Sent tokens to Ethereum with TXSendResponse { logs: Some(Array([Object({"events": Array([Object({"attributes": Array([Object({"key": String("action"), "value": String("send_to_eth")}), Object({"key": String("sender"), "value": String("cosmos1ry437cqvlexdq3mwhv8lnr6mmejx5r5dvhxwy9")}), Object({"key": String("module"), "value": String("send_to_eth")}), Object({"key": String("outgoing_tx_id"), "value": String("1")})]), "type": String("message")}), Object({"attributes": Array([Object({"key": String("recipient"), "value": String("cosmos1979qcq0kdz72w0k9rsxcmfmagx2cydrslxhw5s")}), Object({"key": String("sender"), "value": String("cosmos1ry437cqvlexdq3mwhv8lnr6mmejx5r5dvhxwy9")}), Object({"key": String("amount"), "value": String("296peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609")})]), "type": String("transfer")}), Object({"attributes": Array([Object({"key": String("module"), "value": String("peggy")}), Object({"key": String("bridge_contract")}), Object({"key": String("bridge_chain_id"), "value": String("0")}), Object({"key": String("outgoing_tx_id"), "value": String("1")}), Object({"key": String("nonce"), "value": String("1")})]), "type": String("withdrawal_received")})])})])), txhash: "45EE2B81A9D11E987A3B35614064C7E975AB509D38EACFB6436FF3443D5C9F15" }
-[2021-09-09T03:27:07Z INFO  test_runner::happy_path] Requesting transaction batch
-[2021-09-09T03:27:14Z INFO  orchestrator::main_loop] Sending batch confirm for 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 with 1 in fees
-[2021-09-09T03:27:14Z INFO  orchestrator::main_loop] Sending batch confirm for 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 with 1 in fees
-[2021-09-09T03:27:14Z INFO  orchestrator::main_loop] Sending batch confirm for 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 with 1 in fees
-[2021-09-09T03:27:19Z INFO  relayer::batch_relaying] We have detected latest batch 1 but latest on Ethereum is 0 This batch is estimated to cost 1000000000 Gas / 0.0002 ETH to submit
-[2021-09-09T03:27:19Z INFO  ethereum_peggy::submit_batch] Ordering signatures and submitting TransactionBatch 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 to Ethereum
-[2021-09-09T03:27:19Z INFO  relayer::batch_relaying] We have detected latest batch 1 but latest on Ethereum is 0 This batch is estimated to cost 1000000000 Gas / 0.0002 ETH to submit
-[2021-09-09T03:27:19Z INFO  ethereum_peggy::submit_batch] Ordering signatures and submitting TransactionBatch 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 to Ethereum
-[2021-09-09T03:27:19Z INFO  relayer::batch_relaying] We have detected latest batch 1 but latest on Ethereum is 0 This batch is estimated to cost 1000000000 Gas / 0.0002 ETH to submit
-[2021-09-09T03:27:19Z INFO  ethereum_peggy::submit_batch] Ordering signatures and submitting TransactionBatch 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 to Ethereum
-[2021-09-09T03:27:19Z INFO  test_runner::happy_path] Batch is not yet submitted 0>, waiting
-[2021-09-09T03:27:19Z INFO  ethereum_peggy::submit_batch] Sent batch update with txid 0x6722bab5eab2a59747617a904b5bfc10278f94ca510ca4c006a001cf8315d275
-[2021-09-09T03:27:19Z INFO  ethereum_peggy::submit_batch] Sent batch update with txid 0x7d354c7ca134ba6acc080ae8551824eb987f1666146eaa623842b732fbfa2225
-[2021-09-09T03:27:19Z INFO  ethereum_peggy::submit_batch] Sent batch update with txid 0x0c715ddebf2f1e692ae7f2ed6d4d889f8480ea457052a7f7e8b7ace5a9fda1b9
-[2021-09-09T03:27:21Z INFO  ethereum_peggy::submit_batch] Successfully updated Batch with new Nonce 1
-[2021-09-09T03:27:21Z INFO  ethereum_peggy::submit_batch] Successfully updated Batch with new Nonce 1
-[2021-09-09T03:27:21Z INFO  ethereum_peggy::submit_batch] Successfully updated Batch with new Nonce 1
-[2021-09-09T03:27:23Z INFO  test_runner::happy_path] Batch is not yet submitted 0>, waiting
-[2021-09-09T03:27:30Z INFO  orchestrator::ethereum_event_watcher] Oracle observed batch with nonce 1, contract 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609, and event nonce 4
-[2021-09-09T03:27:31Z INFO  orchestrator::ethereum_event_watcher] Oracle observed batch with nonce 1, contract 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609, and event nonce 4
-[2021-09-09T03:27:32Z INFO  orchestrator::ethereum_event_watcher] Oracle observed batch with nonce 1, contract 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609, and event nonce 4
-[2021-09-09T03:27:35Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 4
-[2021-09-09T03:27:35Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 4
-[2021-09-09T03:27:35Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 4
-[2021-09-09T03:27:40Z INFO  test_runner::happy_path] Successfully updated txbatch nonce to 1 and sent 295peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609 tokens to Ethereum!
-^C⏎                                                                                                                                                                                                                                                                               
- gravity-bridge-sample master tail -f ./data/log/all-up-test-1631165494.log 
-[2021-09-09T05:33:09Z INFO  test_runner::bootstrapping] Signing and submitting Delegate addresses 0xCfDF23e2073FE18E18210c432F6BF715669F5933 for validator cosmos1d87pzm8y6eydlkme8vhf3h2mpz88tec9c8nxsl
-[2021-09-09T05:33:09Z INFO  test_runner::bootstrapping] Signing and submitting Delegate addresses 0x79F57399de0B685C6cAE03798437a1e9Df1dF67C for validator cosmos1ehepl35uft5zkt8ns6xqlu3v99k9sqvs62me0u
-5:33AM ERR dialing failed (attempts: 1): auth failure: secret conn failed: read tcp 7.7.7.3:53502->7.7.7.3:26656: read: connection reset by peer addr={"id":"1f8029b98d23820775da44da197395bbf08dfac4","ip":"7.7.7.3","port":26656} module=pex
-5:33AM ERR dialing failed (attempts: 1): auth failure: secret conn failed: EOF addr={"id":"897178eec4d4ba08b5513cf293c2fc2b366561a9","ip":"7.7.7.2","port":26656} module=pex
-5:34AM ERR dialing failed (attempts: 2): auth failure: secret conn failed: EOF addr={"id":"1f8029b98d23820775da44da197395bbf08dfac4","ip":"7.7.7.3","port":26656} module=pex
-5:34AM ERR dialing failed (attempts: 2): auth failure: secret conn failed: EOF addr={"id":"897178eec4d4ba08b5513cf293c2fc2b366561a9","ip":"7.7.7.2","port":26656} module=pex
-5:34AM ERR dialing failed (attempts: 3): auth failure: secret conn failed: EOF addr={"id":"1f8029b98d23820775da44da197395bbf08dfac4","ip":"7.7.7.3","port":26656} module=pex
-5:34AM ERR dialing failed (attempts: 3): auth failure: secret conn failed: EOF addr={"id":"897178eec4d4ba08b5513cf293c2fc2b366561a9","ip":"7.7.7.2","port":26656} module=pex
-5:35AM ERR dialing failed (attempts: 4): auth failure: secret conn failed: EOF addr={"id":"1f8029b98d23820775da44da197395bbf08dfac4","ip":"7.7.7.3","port":26656} module=pex
-5:35AM ERR dialing failed (attempts: 4): auth failure: secret conn failed: EOF addr={"id":"897178eec4d4ba08b5513cf293c2fc2b366561a9","ip":"7.7.7.2","port":26656} module=pex
-5:35AM ERR dialing failed (attempts: 5): auth failure: secret conn failed: EOF addr={"id":"1f8029b98d23820775da44da197395bbf08dfac4","ip":"7.7.7.3","port":26656} module=pex
-5:35AM ERR dialing failed (attempts: 5): auth failure: secret conn failed: EOF addr={"id":"897178eec4d4ba08b5513cf293c2fc2b366561a9","ip":"7.7.7.2","port":26656} module=pex
-5:36AM ERR dialing failed (attempts: 6): auth failure: secret conn failed: EOF addr={"id":"1f8029b98d23820775da44da197395bbf08dfac4","ip":"7.7.7.3","port":26656} module=pex
-5:36AM ERR dialing failed (attempts: 6): auth failure: secret conn failed: EOF addr={"id":"897178eec4d4ba08b5513cf293c2fc2b366561a9","ip":"7.7.7.2","port":26656} module=pex
-5:38AM ERR dialing failed (attempts: 7): auth failure: secret conn failed: EOF addr={"id":"1f8029b98d23820775da44da197395bbf08dfac4","ip":"7.7.7.3","port":26656} module=pex
-5:38AM ERR dialing failed (attempts: 7): auth failure: secret conn failed: EOF addr={"id":"897178eec4d4ba08b5513cf293c2fc2b366561a9","ip":"7.7.7.2","port":26656} module=pex
-[2021-09-09T05:38:51Z INFO  test_runner::bootstrapping] stdout: Test mode, deploying ERC20 contracts
-    ERC20 deployed at Address -  0x0412C7c846bb6b7DC462CF6B453f76D8440b2609
-    ERC20 deployed at Address -  0x30dA8589BFa1E509A319489E014d384b87815D89
-    ERC20 deployed at Address -  0x9676519d99E390A180Ab1445d5d857E3f6869065
-    Uniswap Liquidity test deployed at Address -  0xD7600ae27C99988A6CD360234062b540F88ECA43
-    Starting Peggy contract deploy
-    About to get latest Peggy valset
-    {
-      "type": "peggy/Valset",
-      "value": {
-        "nonce": "63",
-        "members": [
-          {
-            "power": "1431655765",
-            "ethereum_address": "0x5AF468C92Ba6e6C100A9107A3D1eBE535Af8E3Ef"
-          },
-          {
-            "power": "1431655765",
-            "ethereum_address": "0x79F57399de0B685C6cAE03798437a1e9Df1dF67C"
-          },
-          {
-            "power": "1431655765",
-            "ethereum_address": "0xCfDF23e2073FE18E18210c432F6BF715669F5933"
-          }
-        ],
-        "height": "63"
-      }
-    }
-    Peggy deployed at Address -  0x7580bFE88Dd3d07947908FAE12d95872a260F2D8
-    
-[2021-09-09T05:38:51Z INFO  test_runner::bootstrapping] stderr: 
-+ bash /peggy/tests/container-scripts/integration-tests.sh 3
-Contracts already deployed, running tests
-test-runner: no process found
-/peggy/orchestrator/test_runner /peggy/orchestrator/test_runner
-warning: unused variable: `input`
-   --> peggy_utils/src/types/ethereum_events.rs:442:21
-    |
-442 |     pub fn from_log(input: &Log) -> Result<LogicCallExecutedEvent, PeggyError> {
-    |                     ^^^^^ help: if this is intentional, prefix it with an underscore: `_input`
-    |
-    = note: `#[warn(unused_variables)]` on by default
+[2021-09-10T03:11:05Z INFO  test_runner] Staring Peggy test-runner
+[2021-09-10T03:11:05Z INFO  test_runner] Waiting for Cosmos chain to come online
+[2021-09-10T03:11:22Z INFO  test_runner::utils] Sending orchestrators 100 eth to pay for fees miner has 23229340 ETH
+[2021-09-10T03:11:27Z INFO  test_runner] Starting tests with Ok("")
+[2021-09-10T03:11:27Z INFO  test_runner] Starting Happy path test
+[2021-09-10T03:11:27Z INFO  test_runner::happy_path] Spawning Orchestrator
+[2021-09-10T03:11:28Z INFO  orchestrator::oracle_resync] Oracle is resyncing, looking back into the history to find our last event nonce 1, on block 11
+[2021-09-10T03:11:28Z INFO  test_runner::happy_path] Spawning Orchestrator
+[2021-09-10T03:11:28Z INFO  orchestrator::main_loop] Sending 5 valset confirms starting with 5
+[2021-09-10T03:11:28Z INFO  test_runner::happy_path] Spawning Orchestrator
+[2021-09-10T03:11:28Z INFO  orchestrator::oracle_resync] Oracle is resyncing, looking back into the history to find our last event nonce 1, on block 11
+[2021-09-10T03:11:28Z INFO  orchestrator::oracle_resync] Oracle is resyncing, looking back into the history to find our last event nonce 1, on block 11
+[2021-09-10T03:11:28Z INFO  orchestrator::main_loop] Sending 5 valset confirms starting with 5
+[2021-09-10T03:11:28Z INFO  orchestrator::main_loop] Sending 5 valset confirms starting with 5
+[2021-09-10T03:11:28Z INFO  orchestrator::main_loop] Oracle resync complete, Oracle now operational
+[2021-09-10T03:11:28Z INFO  test_runner::happy_path] Sending in valset request
+[2021-09-10T03:11:28Z INFO  test_runner::happy_path] Delegating 125000000stake to cosmosvaloper1a42emzmx2e8c2668u2taq8d3cwdvr5nc2nw3k0 in order to generate a validator set update
+[2021-09-10T03:11:30Z ERROR relayer::valset_relaying] We don't have a latest confirmed valset?
+[2021-09-10T03:11:30Z INFO  orchestrator::main_loop] Oracle resync complete, Oracle now operational
+[2021-09-10T03:11:30Z INFO  orchestrator::main_loop] Oracle resync complete, Oracle now operational
+[2021-09-10T03:11:30Z ERROR relayer::valset_relaying] We don't have a latest confirmed valset?
+[2021-09-10T03:11:30Z ERROR relayer::valset_relaying] We don't have a latest confirmed valset?
+[2021-09-10T03:11:39Z INFO  orchestrator::main_loop] Sending 1 valset confirms starting with 82
+[2021-09-10T03:11:39Z INFO  orchestrator::main_loop] Sending 1 valset confirms starting with 82
+[2021-09-10T03:11:39Z INFO  orchestrator::main_loop] Sending 1 valset confirms starting with 82
+[2021-09-10T03:11:44Z INFO  test_runner::happy_path] stdout: {"height":"82","txhash":"5B9FCDB3756745019396C10E61FD547D8C6D5ED84A211364274B35CB7D9B749C","codespace":"","code":0,"data":"0A0A0A0864656C6567617465","raw_log":"[{\"events\":[{\"type\":\"delegate\",\"attributes\":[{\"key\":\"validator\",\"value\":\"cosmosvaloper1a42emzmx2e8c2668u2taq8d3cwdvr5nc2nw3k0\"},{\"key\":\"amount\",\"value\":\"125000000\"}]},{\"type\":\"message\",\"attributes\":[{\"key\":\"action\",\"value\":\"delegate\"},{\"key\":\"sender\",\"value\":\"cosmos1jv65s3grqf6v6jl3dp4t6c9t9rk99cd88lyufl\"},{\"key\":\"module\",\"value\":\"staking\"},{\"key\":\"sender\",\"value\":\"cosmos1a42emzmx2e8c2668u2taq8d3cwdvr5nc086y6u\"}]},{\"type\":\"transfer\",\"attributes\":[{\"key\":\"recipient\",\"value\":\"cosmos1a42emzmx2e8c2668u2taq8d3cwdvr5nc086y6u\"},{\"key\":\"sender\",\"value\":\"cosmos1jv65s3grqf6v6jl3dp4t6c9t9rk99cd88lyufl\"},{\"key\":\"amount\",\"value\":\"1footoken,14865stake\"}]}]}]","logs":[{"msg_index":0,"log":"","events":[{"type":"delegate","attributes":[{"key":"validator","value":"cosmosvaloper1a42emzmx2e8c2668u2taq8d3cwdvr5nc2nw3k0"},{"key":"amount","value":"125000000"}]},{"type":"message","attributes":[{"key":"action","value":"delegate"},{"key":"sender","value":"cosmos1jv65s3grqf6v6jl3dp4t6c9t9rk99cd88lyufl"},{"key":"module","value":"staking"},{"key":"sender","value":"cosmos1a42emzmx2e8c2668u2taq8d3cwdvr5nc086y6u"}]},{"type":"transfer","attributes":[{"key":"recipient","value":"cosmos1a42emzmx2e8c2668u2taq8d3cwdvr5nc086y6u"},{"key":"sender","value":"cosmos1jv65s3grqf6v6jl3dp4t6c9t9rk99cd88lyufl"},{"key":"amount","value":"1footoken,14865stake"}]}]}],"info":"","gas_wanted":"200000","gas_used":"137113","tx":null,"timestamp":""}
 
-warning: 1 warning emitted
+[2021-09-10T03:11:44Z INFO  test_runner::happy_path] stderr:
+[2021-09-10T03:11:44Z INFO  test_runner::happy_path] Validator set is not yet updated to 0>, waiting
+[2021-09-10T03:11:45Z INFO  relayer::valset_relaying] We have detected latest valset 82 but latest on Ethereum is 0 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
+[2021-09-10T03:11:45Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 0 -> 82 update to Ethereum
+[2021-09-10T03:11:45Z INFO  relayer::valset_relaying] We have detected latest valset 82 but latest on Ethereum is 0 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
+[2021-09-10T03:11:45Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 0 -> 82 update to Ethereum
+[2021-09-10T03:11:45Z INFO  relayer::valset_relaying] We have detected latest valset 5 but latest on Ethereum is 0 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
+[2021-09-10T03:11:45Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 0 -> 5 update to Ethereum
+[2021-09-10T03:11:46Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0xaabab42ae4ef1e905fa528ffad07ef6845774007fad0e7f375c3795a0c2e7d2b
+[2021-09-10T03:11:46Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0xf3787a970fa84ccff2a4ae41a4a9e2ac37a024e4ef4b3427cb20c723f12938ba
+[2021-09-10T03:11:46Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0xd1ae080267f0dbb3d3cfa09aebdb55e6565925f521612e336948210a00daa0d9
+[2021-09-10T03:11:48Z INFO  ethereum_peggy::valset_update] Successfully updated Valset with new Nonce 82
+[2021-09-10T03:11:48Z ERROR ethereum_peggy::valset_update] Current nonce is 82 expected to update to nonce 5
+[2021-09-10T03:11:48Z INFO  ethereum_peggy::valset_update] Successfully updated Valset with new Nonce 82
+[2021-09-10T03:11:48Z INFO  test_runner::happy_path] Validator set is not yet updated to 0>, waiting
+[2021-09-10T03:11:52Z INFO  test_runner::happy_path] Validator set successfully updated!
+[2021-09-10T03:11:52Z INFO  test_runner::happy_path] Sending in valset request
+[2021-09-10T03:11:52Z INFO  test_runner::happy_path] Delegating 125000000stake to cosmosvaloper19a6z7v4hc62t267e4de74ayty05v30rvqkwnqe in order to generate a validator set update
+[2021-09-10T03:11:55Z INFO  test_runner::happy_path] stdout: {"height":"85","txhash":"B964E64EA4AE00B2E1DBCE4BEFB7B8DF64066B4672C91ABAA15C781354B5752C","codespace":"","code":0,"data":"0A0A0A0864656C6567617465","raw_log":"[{\"events\":[{\"type\":\"delegate\",\"attributes\":[{\"key\":\"validator\",\"value\":\"cosmosvaloper19a6z7v4hc62t267e4de74ayty05v30rvqkwnqe\"},{\"key\":\"amount\",\"value\":\"125000000\"}]},{\"type\":\"message\",\"attributes\":[{\"key\":\"action\",\"value\":\"delegate\"},{\"key\":\"module\",\"value\":\"staking\"},{\"key\":\"sender\",\"value\":\"cosmos1a42emzmx2e8c2668u2taq8d3cwdvr5nc086y6u\"}]}]}]","logs":[{"msg_index":0,"log":"","events":[{"type":"delegate","attributes":[{"key":"validator","value":"cosmosvaloper19a6z7v4hc62t267e4de74ayty05v30rvqkwnqe"},{"key":"amount","value":"125000000"}]},{"type":"message","attributes":[{"key":"action","value":"delegate"},{"key":"module","value":"staking"},{"key":"sender","value":"cosmos1a42emzmx2e8c2668u2taq8d3cwdvr5nc086y6u"}]}]}],"info":"","gas_wanted":"200000","gas_used":"98662","tx":null,"timestamp":""}
 
-warning: unused variable: `grpc_client`
-  --> test_runner/src/arbitrary_logic.rs:19:5
-   |
-19 |     grpc_client: PeggyQueryClient<Channel>,
-   |     ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_grpc_client`
-   |
-   = note: `#[warn(unused_variables)]` on by default
-
-warning: 1 warning emitted
-
-    Finished release [optimized] target(s) in 2.22s
-     Running `/peggy/orchestrator/target/release/test-runner`
-[2021-09-09T05:38:54Z INFO  test_runner] Staring Peggy test-runner
-[2021-09-09T05:38:54Z INFO  test_runner] Waiting for Cosmos chain to come online
-[2021-09-09T05:39:09Z INFO  test_runner::utils] Sending orchestrators 100 eth to pay for fees miner has 23229340 ETH
-[2021-09-09T05:39:15Z INFO  test_runner] Starting tests with Ok("")
-[2021-09-09T05:39:15Z INFO  test_runner] Starting Happy path test
-[2021-09-09T05:39:15Z INFO  test_runner::happy_path] Spawning Orchestrator
-[2021-09-09T05:39:16Z INFO  orchestrator::oracle_resync] Oracle is resyncing, looking back into the history to find our last event nonce 1, on block 12
-[2021-09-09T05:39:16Z INFO  test_runner::happy_path] Spawning Orchestrator
-[2021-09-09T05:39:16Z INFO  test_runner::happy_path] Spawning Orchestrator
-[2021-09-09T05:39:16Z INFO  orchestrator::oracle_resync] Oracle is resyncing, looking back into the history to find our last event nonce 1, on block 12
-[2021-09-09T05:39:16Z INFO  orchestrator::main_loop] Sending 5 valset confirms starting with 5
-[2021-09-09T05:39:16Z INFO  orchestrator::oracle_resync] Oracle is resyncing, looking back into the history to find our last event nonce 1, on block 12
-[2021-09-09T05:39:16Z INFO  orchestrator::main_loop] Oracle resync complete, Oracle now operational
-[2021-09-09T05:39:16Z INFO  orchestrator::main_loop] Oracle resync complete, Oracle now operational
-[2021-09-09T05:39:16Z INFO  test_runner::happy_path] Sending in valset request
-[2021-09-09T05:39:16Z INFO  test_runner::happy_path] Delegating 125000000stake to cosmosvaloper1husmmfe3gq6wn0y7y0q2ed6tsnatrs9nkamp3h in order to generate a validator set update
-[2021-09-09T05:39:19Z INFO  test_runner::happy_path] stdout: {"height":"70","txhash":"6E573CAE02F2DCF35CCD994CE658E9518709E74F14CDA793959E30F2EE637A05","codespace":"","code":0,"data":"0A0A0A0864656C6567617465","raw_log":"[{\"events\":[{\"type\":\"delegate\",\"attributes\":[{\"key\":\"validator\",\"value\":\"cosmosvaloper1husmmfe3gq6wn0y7y0q2ed6tsnatrs9nkamp3h\"},{\"key\":\"amount\",\"value\":\"125000000\"}]},{\"type\":\"message\",\"attributes\":[{\"key\":\"action\",\"value\":\"delegate\"},{\"key\":\"sender\",\"value\":\"cosmos1jv65s3grqf6v6jl3dp4t6c9t9rk99cd88lyufl\"},{\"key\":\"module\",\"value\":\"staking\"},{\"key\":\"sender\",\"value\":\"cosmos1husmmfe3gq6wn0y7y0q2ed6tsnatrs9nnf05ay\"}]},{\"type\":\"transfer\",\"attributes\":[{\"key\":\"recipient\",\"value\":\"cosmos1husmmfe3gq6wn0y7y0q2ed6tsnatrs9nnf05ay\"},{\"key\":\"sender\",\"value\":\"cosmos1jv65s3grqf6v6jl3dp4t6c9t9rk99cd88lyufl\"},{\"key\":\"amount\",\"value\":\"12688stake\"}]}]}]","logs":[{"msg_index":0,"log":"","events":[{"type":"delegate","attributes":[{"key":"validator","value":"cosmosvaloper1husmmfe3gq6wn0y7y0q2ed6tsnatrs9nkamp3h"},{"key":"amount","value":"125000000"}]},{"type":"message","attributes":[{"key":"action","value":"delegate"},{"key":"sender","value":"cosmos1jv65s3grqf6v6jl3dp4t6c9t9rk99cd88lyufl"},{"key":"module","value":"staking"},{"key":"sender","value":"cosmos1husmmfe3gq6wn0y7y0q2ed6tsnatrs9nnf05ay"}]},{"type":"transfer","attributes":[{"key":"recipient","value":"cosmos1husmmfe3gq6wn0y7y0q2ed6tsnatrs9nnf05ay"},{"key":"sender","value":"cosmos1jv65s3grqf6v6jl3dp4t6c9t9rk99cd88lyufl"},{"key":"amount","value":"12688stake"}]}]}],"info":"","gas_wanted":"200000","gas_used":"129925","tx":null,"timestamp":""}
-    
-[2021-09-09T05:39:19Z INFO  test_runner::happy_path] stderr: 
-[2021-09-09T05:39:19Z INFO  orchestrator::main_loop] Oracle resync complete, Oracle now operational
-[2021-09-09T05:39:19Z INFO  orchestrator::main_loop] Sending 5 valset confirms starting with 5
-[2021-09-09T05:39:19Z INFO  orchestrator::main_loop] Sending 5 valset confirms starting with 5
-[2021-09-09T05:39:20Z INFO  test_runner::happy_path] Validator set is not yet updated to 0>, waiting
-[2021-09-09T05:39:20Z ERROR relayer::valset_relaying] We don't have a latest confirmed valset?
-[2021-09-09T05:39:20Z ERROR relayer::valset_relaying] We don't have a latest confirmed valset?
-[2021-09-09T05:39:20Z ERROR relayer::valset_relaying] We don't have a latest confirmed valset?
-[2021-09-09T05:39:24Z INFO  test_runner::happy_path] Validator set is not yet updated to 0>, waiting
-[2021-09-09T05:39:27Z INFO  orchestrator::main_loop] Sending 6 valset confirms starting with 70
-[2021-09-09T05:39:27Z INFO  orchestrator::main_loop] Sending 1 valset confirms starting with 70
-[2021-09-09T05:39:27Z INFO  orchestrator::main_loop] Sending 1 valset confirms starting with 70
-[2021-09-09T05:39:28Z INFO  test_runner::happy_path] Validator set is not yet updated to 0>, waiting
-[2021-09-09T05:39:32Z INFO  test_runner::happy_path] Validator set is not yet updated to 0>, waiting
-[2021-09-09T05:39:33Z INFO  relayer::valset_relaying] We have detected latest valset 70 but latest on Ethereum is 0 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
-[2021-09-09T05:39:33Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 0 -> 70 update to Ethereum
-[2021-09-09T05:39:33Z INFO  relayer::valset_relaying] We have detected latest valset 70 but latest on Ethereum is 0 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
-[2021-09-09T05:39:33Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 0 -> 70 update to Ethereum
-[2021-09-09T05:39:33Z INFO  relayer::valset_relaying] We have detected latest valset 70 but latest on Ethereum is 0 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
-[2021-09-09T05:39:33Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 0 -> 70 update to Ethereum
-[2021-09-09T05:39:33Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0xc32d6a27120603899883cc1a17cd803172d1118c6b96ab1ccd8365d18d5fbb35
-[2021-09-09T05:39:34Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0x2e2b931849488a2c1e17e41785bb653d9d3fbcb788ea554cc6411bea4f70da3f
-[2021-09-09T05:39:34Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0xd073017288b278637103639bfdbd0095ce0613015f9044150b7ae3bb813bcec4
-[2021-09-09T05:39:36Z INFO  test_runner::happy_path] Validator set is not yet updated to 0>, waiting
-[2021-09-09T05:39:40Z INFO  test_runner::happy_path] Validator set is not yet updated to 0>, waiting
-[2021-09-09T05:39:41Z INFO  ethereum_peggy::valset_update] Successfully updated Valset with new Nonce 70
-[2021-09-09T05:39:41Z INFO  ethereum_peggy::valset_update] Successfully updated Valset with new Nonce 70
-[2021-09-09T05:39:41Z INFO  ethereum_peggy::valset_update] Successfully updated Valset with new Nonce 70
-[2021-09-09T05:39:44Z INFO  test_runner::happy_path] Validator set is not yet updated to 0>, waiting
-[2021-09-09T05:39:48Z INFO  test_runner::happy_path] Validator set successfully updated!
-[2021-09-09T05:39:48Z INFO  test_runner::happy_path] Sending in valset request
-[2021-09-09T05:39:48Z INFO  test_runner::happy_path] Delegating 125000000stake to cosmosvaloper1ehepl35uft5zkt8ns6xqlu3v99k9sqvsl70vr0 in order to generate a validator set update
-[2021-09-09T05:39:52Z INFO  test_runner::happy_path] stdout: {"height":"76","txhash":"2BE846C1ED50C51EA8ED0A7BFE9A218410368EA79671998186811AB9A8C88910","codespace":"","code":0,"data":"0A0A0A0864656C6567617465","raw_log":"[{\"events\":[{\"type\":\"delegate\",\"attributes\":[{\"key\":\"validator\",\"value\":\"cosmosvaloper1ehepl35uft5zkt8ns6xqlu3v99k9sqvsl70vr0\"},{\"key\":\"amount\",\"value\":\"125000000\"}]},{\"type\":\"message\",\"attributes\":[{\"key\":\"action\",\"value\":\"delegate\"},{\"key\":\"module\",\"value\":\"staking\"},{\"key\":\"sender\",\"value\":\"cosmos1husmmfe3gq6wn0y7y0q2ed6tsnatrs9nnf05ay\"}]}]}]","logs":[{"msg_index":0,"log":"","events":[{"type":"delegate","attributes":[{"key":"validator","value":"cosmosvaloper1ehepl35uft5zkt8ns6xqlu3v99k9sqvsl70vr0"},{"key":"amount","value":"125000000"}]},{"type":"message","attributes":[{"key":"action","value":"delegate"},{"key":"module","value":"staking"},{"key":"sender","value":"cosmos1husmmfe3gq6wn0y7y0q2ed6tsnatrs9nnf05ay"}]}]}],"info":"","gas_wanted":"200000","gas_used":"98701","tx":null,"timestamp":""}
-    
-[2021-09-09T05:39:52Z INFO  test_runner::happy_path] stderr: 
-[2021-09-09T05:39:52Z INFO  orchestrator::main_loop] Sending 1 valset confirms starting with 76
-[2021-09-09T05:39:52Z INFO  orchestrator::main_loop] Sending 1 valset confirms starting with 76
-[2021-09-09T05:39:52Z INFO  orchestrator::main_loop] Sending 1 valset confirms starting with 76
-[2021-09-09T05:39:52Z INFO  test_runner::happy_path] Validator set is not yet updated to 70>, waiting
-[2021-09-09T05:39:56Z INFO  test_runner::happy_path] Validator set is not yet updated to 70>, waiting
-[2021-09-09T05:40:00Z INFO  test_runner::happy_path] Validator set is not yet updated to 70>, waiting
-[2021-09-09T05:40:04Z INFO  test_runner::happy_path] Validator set is not yet updated to 70>, waiting
-[2021-09-09T05:40:08Z INFO  test_runner::happy_path] Validator set is not yet updated to 70>, waiting
-[2021-09-09T05:40:09Z INFO  relayer::valset_relaying] We have detected latest valset 76 but latest on Ethereum is 70 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
-[2021-09-09T05:40:09Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 70 -> 76 update to Ethereum
-[2021-09-09T05:40:09Z INFO  relayer::valset_relaying] We have detected latest valset 76 but latest on Ethereum is 70 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
-[2021-09-09T05:40:09Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 70 -> 76 update to Ethereum
-[2021-09-09T05:40:09Z INFO  relayer::valset_relaying] We have detected latest valset 76 but latest on Ethereum is 70 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
-[2021-09-09T05:40:09Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 70 -> 76 update to Ethereum
-[2021-09-09T05:40:09Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0xfad5a1e9a11c2baeffee437b9336a9b4cda7b29afa55b9a57e3906b6f1531bbf
-[2021-09-09T05:40:10Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0xb9159eca05eed40303b9b3787883137a49b755b7462f9df05c640e9eeaaec29f
-[2021-09-09T05:40:10Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0x9c5b82dc2c8f23e18711738fb94e7c51f0801323e1dd4d3712aa09e289c53c56
-[2021-09-09T05:40:12Z INFO  test_runner::happy_path] Validator set is not yet updated to 70>, waiting
-[2021-09-09T05:40:16Z INFO  test_runner::happy_path] Validator set is not yet updated to 70>, waiting
-[2021-09-09T05:40:20Z INFO  test_runner::happy_path] Validator set is not yet updated to 70>, waiting
-[2021-09-09T05:40:23Z INFO  ethereum_peggy::valset_update] Successfully updated Valset with new Nonce 76
-[2021-09-09T05:40:23Z INFO  ethereum_peggy::valset_update] Successfully updated Valset with new Nonce 76
-[2021-09-09T05:40:23Z INFO  ethereum_peggy::valset_update] Successfully updated Valset with new Nonce 76
-[2021-09-09T05:40:25Z INFO  test_runner::happy_path] Validator set is not yet updated to 70>, waiting
-[2021-09-09T05:40:29Z INFO  test_runner::happy_path] Validator set successfully updated!
-[2021-09-09T05:40:29Z INFO  test_runner::happy_path] Sending to Cosmos from 0xBf660843528035a5A4921534E156a27e64B231fE to cosmos1fepg4w8h7krvvctk3aakulteurcgxemnavqs2d with amount 100
-5:40AM ERR dialing failed (attempts: 8): auth failure: secret conn failed: EOF addr={"id":"1f8029b98d23820775da44da197395bbf08dfac4","ip":"7.7.7.3","port":26656} module=pex
-5:40AM ERR dialing failed (attempts: 8): auth failure: secret conn failed: read tcp 7.7.7.2:37964->7.7.7.2:26656: read: connection reset by peer addr={"id":"897178eec4d4ba08b5513cf293c2fc2b366561a9","ip":"7.7.7.2","port":26656} module=pex
-[2021-09-09T05:40:52Z INFO  test_runner::happy_path] Send to Cosmos txid: 0xc9bade6bc1a1d4cd50359ffe98bb4a14f0e42cc1982b843e1978b98e1db3454c
-[2021-09-09T05:40:52Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
-[2021-09-09T05:40:58Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
-[2021-09-09T05:41:00Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1fepg4w8h7krvvctk3aakulteurcgxemnavqs2d, amount 100, and event nonce 1
-[2021-09-09T05:41:00Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1fepg4w8h7krvvctk3aakulteurcgxemnavqs2d, amount 100, and event nonce 1
-[2021-09-09T05:41:03Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 1
-[2021-09-09T05:41:03Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 1
-[2021-09-09T05:41:03Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
-[2021-09-09T05:41:03Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1fepg4w8h7krvvctk3aakulteurcgxemnavqs2d, amount 100, and event nonce 1
-[2021-09-09T05:41:08Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 1
-[2021-09-09T05:41:09Z INFO  test_runner::happy_path] Successfully bridged ERC20 100peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609 to Cosmos! Balance is now 100peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609
-[2021-09-09T05:41:09Z INFO  test_runner::happy_path] Sending to Cosmos from 0xBf660843528035a5A4921534E156a27e64B231fE to cosmos1fepg4w8h7krvvctk3aakulteurcgxemnavqs2d with amount 100
-[2021-09-09T05:41:14Z INFO  test_runner::happy_path] Send to Cosmos txid: 0x66411a544a7d387c34766ccd35af9c9aee4007d5bb54dc660ad29438450686be
-[2021-09-09T05:41:14Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
-[2021-09-09T05:41:16Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1fepg4w8h7krvvctk3aakulteurcgxemnavqs2d, amount 100, and event nonce 2
-[2021-09-09T05:41:19Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 2
-[2021-09-09T05:41:19Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
-[2021-09-09T05:41:24Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
-[2021-09-09T05:41:26Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1fepg4w8h7krvvctk3aakulteurcgxemnavqs2d, amount 100, and event nonce 2
-[2021-09-09T05:41:26Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1fepg4w8h7krvvctk3aakulteurcgxemnavqs2d, amount 100, and event nonce 2
-[2021-09-09T05:41:30Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 2
-[2021-09-09T05:41:30Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 2
-[2021-09-09T05:41:30Z INFO  test_runner::happy_path] Successfully bridged ERC20 100peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609 to Cosmos! Balance is now 200peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609
-[2021-09-09T05:41:30Z INFO  test_runner::happy_path] Sending to Cosmos from 0xBf660843528035a5A4921534E156a27e64B231fE to cosmos1fepg4w8h7krvvctk3aakulteurcgxemnavqs2d with amount 100
-[2021-09-09T05:41:37Z INFO  test_runner::happy_path] Send to Cosmos txid: 0x4f173ea7eea34279fa95fe871ee42c30aa5fc0ff6267cb2cc35c0dcb869e13d9
-[2021-09-09T05:41:37Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
-[2021-09-09T05:41:39Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1fepg4w8h7krvvctk3aakulteurcgxemnavqs2d, amount 100, and event nonce 3
-[2021-09-09T05:41:39Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1fepg4w8h7krvvctk3aakulteurcgxemnavqs2d, amount 100, and event nonce 3
-[2021-09-09T05:41:41Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
-[2021-09-09T05:41:41Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 3
-[2021-09-09T05:41:41Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 3
-[2021-09-09T05:41:43Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1fepg4w8h7krvvctk3aakulteurcgxemnavqs2d, amount 100, and event nonce 3
-[2021-09-09T05:41:46Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 3
-[2021-09-09T05:41:47Z INFO  test_runner::happy_path] Successfully bridged ERC20 100peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609 to Cosmos! Balance is now 300peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609
-[2021-09-09T05:42:03Z INFO  test_runner::happy_path] Successfully failed to duplicate ERC20!
-[2021-09-09T05:42:03Z INFO  test_runner::happy_path] Sending 295peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609 from cosmos1fepg4w8h7krvvctk3aakulteurcgxemnavqs2d on Cosmos back to Ethereum
-[2021-09-09T05:42:08Z INFO  test_runner::happy_path] Sent tokens to Ethereum with TXSendResponse { logs: Some(Array([Object({"events": Array([Object({"attributes": Array([Object({"key": String("action"), "value": String("send_to_eth")}), Object({"key": String("sender"), "value": String("cosmos1fepg4w8h7krvvctk3aakulteurcgxemnavqs2d")}), Object({"key": String("module"), "value": String("send_to_eth")}), Object({"key": String("outgoing_tx_id"), "value": String("1")})]), "type": String("message")}), Object({"attributes": Array([Object({"key": String("recipient"), "value": String("cosmos1979qcq0kdz72w0k9rsxcmfmagx2cydrslxhw5s")}), Object({"key": String("sender"), "value": String("cosmos1fepg4w8h7krvvctk3aakulteurcgxemnavqs2d")}), Object({"key": String("amount"), "value": String("296peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609")})]), "type": String("transfer")}), Object({"attributes": Array([Object({"key": String("module"), "value": String("peggy")}), Object({"key": String("bridge_contract")}), Object({"key": String("bridge_chain_id"), "value": String("0")}), Object({"key": String("outgoing_tx_id"), "value": String("1")}), Object({"key": String("nonce"), "value": String("1")})]), "type": String("withdrawal_received")})])})])), txhash: "089E9F79D93F2520B04D89DC5081C7B13C0AE488672C601CF152B707C106E416" }
-[2021-09-09T05:42:08Z INFO  test_runner::happy_path] Requesting transaction batch
-[2021-09-09T05:42:15Z INFO  orchestrator::main_loop] Sending batch confirm for 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 with 1 in fees
-[2021-09-09T05:42:15Z INFO  orchestrator::main_loop] Sending batch confirm for 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 with 1 in fees
-[2021-09-09T05:42:15Z INFO  orchestrator::main_loop] Sending batch confirm for 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 with 1 in fees
-[2021-09-09T05:42:20Z INFO  test_runner::happy_path] Batch is not yet submitted 0>, waiting
-[2021-09-09T05:42:24Z INFO  test_runner::happy_path] Batch is not yet submitted 0>, waiting
-[2021-09-09T05:42:25Z INFO  relayer::batch_relaying] We have detected latest batch 1 but latest on Ethereum is 0 This batch is estimated to cost 1000000000 Gas / 0.0002 ETH to submit
-[2021-09-09T05:42:25Z INFO  ethereum_peggy::submit_batch] Ordering signatures and submitting TransactionBatch 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 to Ethereum
-[2021-09-09T05:42:25Z INFO  relayer::batch_relaying] We have detected latest batch 1 but latest on Ethereum is 0 This batch is estimated to cost 1000000000 Gas / 0.0002 ETH to submit
-[2021-09-09T05:42:25Z INFO  ethereum_peggy::submit_batch] Ordering signatures and submitting TransactionBatch 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 to Ethereum
-[2021-09-09T05:42:25Z INFO  relayer::batch_relaying] We have detected latest batch 1 but latest on Ethereum is 0 This batch is estimated to cost 1000000000 Gas / 0.0002 ETH to submit
-[2021-09-09T05:42:25Z INFO  ethereum_peggy::submit_batch] Ordering signatures and submitting TransactionBatch 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 to Ethereum
-[2021-09-09T05:42:26Z INFO  ethereum_peggy::submit_batch] Sent batch update with txid 0xca58e46e24643b04ed7f299f2496b3568490de99b68f559445217be825e9c174
-[2021-09-09T05:42:26Z INFO  ethereum_peggy::submit_batch] Sent batch update with txid 0xff1137139b8c350c8879e99813ea4c5ac2938e21d63878b40676a70e13c238bd
-[2021-09-09T05:42:26Z INFO  ethereum_peggy::submit_batch] Sent batch update with txid 0x8835369d8f5930cdbaf7ff1316664480d4f89d0ed0eb94492f8a1c346db26720
-[2021-09-09T05:42:28Z INFO  ethereum_peggy::submit_batch] Successfully updated Batch with new Nonce 1
-[2021-09-09T05:42:28Z INFO  ethereum_peggy::submit_batch] Successfully updated Batch with new Nonce 1
-[2021-09-09T05:42:28Z INFO  ethereum_peggy::submit_batch] Successfully updated Batch with new Nonce 1
-[2021-09-09T05:42:28Z INFO  test_runner::happy_path] Batch is not yet submitted 0>, waiting
-[2021-09-09T05:42:31Z INFO  orchestrator::ethereum_event_watcher] Oracle observed batch with nonce 1, contract 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609, and event nonce 4
-[2021-09-09T05:42:31Z INFO  orchestrator::ethereum_event_watcher] Oracle observed batch with nonce 1, contract 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609, and event nonce 4
-[2021-09-09T05:42:34Z INFO  orchestrator::ethereum_event_watcher] Oracle observed batch with nonce 1, contract 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609, and event nonce 4
-[2021-09-09T05:42:36Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 4
-[2021-09-09T05:42:36Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 4
-[2021-09-09T05:42:36Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 4
-[2021-09-09T05:42:40Z INFO  test_runner::happy_path] Successfully updated txbatch nonce to 1 and sent 295peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609 tokens to Ethereum!
+[2021-09-10T03:11:55Z INFO  test_runner::happy_path] stderr:
+[2021-09-10T03:11:56Z INFO  test_runner::happy_path] Validator set is not yet updated to 82>, waiting
+3:11AM ERR dialing failed (attempts: 8): auth failure: secret conn failed: EOF addr={"id":"634cd4a67b879be0a83c3e0375cd5a3d539d9d02","ip":"7.7.7.3","port":26656} module=pex
+3:11AM ERR dialing failed (attempts: 8): auth failure: secret conn failed: read tcp 7.7.7.2:38522->7.7.7.2:26656: read: connection reset by peer addr={"id":"47f6c6c8798fb47e3368364bc348b0ae04a89e8a","ip":"7.7.7.2","port":26656} module=pex
+[2021-09-10T03:12:00Z INFO  test_runner::happy_path] Validator set is not yet updated to 82>, waiting
+[2021-09-10T03:12:01Z INFO  orchestrator::main_loop] Sending 1 valset confirms starting with 85
+[2021-09-10T03:12:01Z INFO  orchestrator::main_loop] Sending 1 valset confirms starting with 85
+[2021-09-10T03:12:01Z INFO  orchestrator::main_loop] Sending 1 valset confirms starting with 85
+[2021-09-10T03:12:04Z INFO  test_runner::happy_path] Validator set is not yet updated to 82>, waiting
+[2021-09-10T03:12:08Z INFO  test_runner::happy_path] Validator set is not yet updated to 82>, waiting
+[2021-09-10T03:12:12Z INFO  test_runner::happy_path] Validator set is not yet updated to 82>, waiting
+[2021-09-10T03:12:16Z INFO  test_runner::happy_path] Validator set is not yet updated to 82>, waiting
+[2021-09-10T03:12:19Z INFO  relayer::valset_relaying] We have detected latest valset 85 but latest on Ethereum is 82 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
+[2021-09-10T03:12:19Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 82 -> 85 update to Ethereum
+[2021-09-10T03:12:19Z INFO  relayer::valset_relaying] We have detected latest valset 85 but latest on Ethereum is 82 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
+[2021-09-10T03:12:19Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 82 -> 85 update to Ethereum
+[2021-09-10T03:12:20Z INFO  relayer::valset_relaying] We have detected latest valset 85 but latest on Ethereum is 82 This valset is estimated to cost 1000000000 Gas / 0.0001 ETH to submit
+[2021-09-10T03:12:20Z INFO  ethereum_peggy::valset_update] Ordering signatures and submitting validator set 82 -> 85 update to Ethereum
+[2021-09-10T03:12:20Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0x61a4427a9d6c6f10c9c89990985ffe23b62a58364c8fb8954d54e7c711d34ad9
+[2021-09-10T03:12:20Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0x4d268e4d3ff95b11b05b1c707d69488d4f90281482626db1ebdfa6837c131185
+[2021-09-10T03:12:20Z INFO  ethereum_peggy::valset_update] Sent valset update with txid 0x75cb37c35f06e110eb99c93d60ab88d841c50b370f8e76b894f64dbabd224e85
+[2021-09-10T03:12:20Z INFO  test_runner::happy_path] Validator set is not yet updated to 82>, waiting
+[2021-09-10T03:12:24Z INFO  test_runner::happy_path] Validator set is not yet updated to 82>, waiting
+[2021-09-10T03:12:28Z INFO  test_runner::happy_path] Validator set is not yet updated to 82>, waiting
+[2021-09-10T03:12:31Z INFO  ethereum_peggy::valset_update] Successfully updated Valset with new Nonce 85
+[2021-09-10T03:12:31Z INFO  ethereum_peggy::valset_update] Successfully updated Valset with new Nonce 85
+[2021-09-10T03:12:31Z INFO  ethereum_peggy::valset_update] Successfully updated Valset with new Nonce 85
+[2021-09-10T03:12:32Z INFO  test_runner::happy_path] Validator set is not yet updated to 82>, waiting
+[2021-09-10T03:12:36Z INFO  test_runner::happy_path] Validator set successfully updated!
+[2021-09-10T03:12:36Z INFO  test_runner::happy_path] Sending to Cosmos from 0xBf660843528035a5A4921534E156a27e64B231fE to cosmos1ak4ukur2kyz6vwec54wy4fj5n7glwknhvfqhh2 with amount 100
+[2021-09-10T03:12:51Z INFO  test_runner::happy_path] Send to Cosmos txid: 0x541ae4a90a6747a9d79536ad77db19da539c51a2130fa6980c5917082ff330c5
+[2021-09-10T03:12:51Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
+[2021-09-10T03:12:55Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
+[2021-09-10T03:13:01Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
+[2021-09-10T03:13:01Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ak4ukur2kyz6vwec54wy4fj5n7glwknhvfqhh2, amount 100, and event nonce 1
+[2021-09-10T03:13:01Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ak4ukur2kyz6vwec54wy4fj5n7glwknhvfqhh2, amount 100, and event nonce 1
+[2021-09-10T03:13:01Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ak4ukur2kyz6vwec54wy4fj5n7glwknhvfqhh2, amount 100, and event nonce 1
+[2021-09-10T03:13:06Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 1
+[2021-09-10T03:13:06Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 1
+[2021-09-10T03:13:06Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 1
+[2021-09-10T03:13:07Z INFO  test_runner::happy_path] Successfully bridged ERC20 100peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609 to Cosmos! Balance is now 100peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609
+[2021-09-10T03:13:07Z INFO  test_runner::happy_path] Sending to Cosmos from 0xBf660843528035a5A4921534E156a27e64B231fE to cosmos1ak4ukur2kyz6vwec54wy4fj5n7glwknhvfqhh2 with amount 100
+[2021-09-10T03:13:14Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ak4ukur2kyz6vwec54wy4fj5n7glwknhvfqhh2, amount 100, and event nonce 2
+[2021-09-10T03:13:14Z INFO  test_runner::happy_path] Send to Cosmos txid: 0xe07820c41e8f3da77c4151c4e2d892ef53a6748d37b611ba70eb1d9aa6101f67
+[2021-09-10T03:13:14Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
+[2021-09-10T03:13:14Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ak4ukur2kyz6vwec54wy4fj5n7glwknhvfqhh2, amount 100, and event nonce 2
+[2021-09-10T03:13:17Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 2
+[2021-09-10T03:13:17Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 2
+[2021-09-10T03:13:17Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
+[2021-09-10T03:13:23Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
+[2021-09-10T03:13:27Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ak4ukur2kyz6vwec54wy4fj5n7glwknhvfqhh2, amount 100, and event nonce 2
+[2021-09-10T03:13:28Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 2
+[2021-09-10T03:13:28Z INFO  test_runner::happy_path] Successfully bridged ERC20 100peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609 to Cosmos! Balance is now 200peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609
+[2021-09-10T03:13:28Z INFO  test_runner::happy_path] Sending to Cosmos from 0xBf660843528035a5A4921534E156a27e64B231fE to cosmos1ak4ukur2kyz6vwec54wy4fj5n7glwknhvfqhh2 with amount 100
+[2021-09-10T03:13:34Z INFO  test_runner::happy_path] Send to Cosmos txid: 0xb83e3a303355b092d38b78a57fee3420fccc62c855714a02bda6f501622211ea
+[2021-09-10T03:13:34Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
+[2021-09-10T03:13:39Z INFO  test_runner::happy_path] Waiting for ERC20 deposit
+[2021-09-10T03:13:40Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ak4ukur2kyz6vwec54wy4fj5n7glwknhvfqhh2, amount 100, and event nonce 3
+[2021-09-10T03:13:40Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ak4ukur2kyz6vwec54wy4fj5n7glwknhvfqhh2, amount 100, and event nonce 3
+[2021-09-10T03:13:40Z INFO  orchestrator::ethereum_event_watcher] Oracle observed deposit with sender 0xBf660843528035a5A4921534E156a27e64B231fE, destination cosmos1ak4ukur2kyz6vwec54wy4fj5n7glwknhvfqhh2, amount 100, and event nonce 3
+[2021-09-10T03:13:44Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 3
+[2021-09-10T03:13:44Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 3
+[2021-09-10T03:13:44Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 3
+[2021-09-10T03:13:44Z INFO  test_runner::happy_path] Successfully bridged ERC20 100peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609 to Cosmos! Balance is now 300peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609
+[2021-09-10T03:14:00Z INFO  test_runner::happy_path] Successfully failed to duplicate ERC20!
+[2021-09-10T03:14:00Z INFO  test_runner::happy_path] Sending 295peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609 from cosmos1ak4ukur2kyz6vwec54wy4fj5n7glwknhvfqhh2 on Cosmos back to Ethereum
+[2021-09-10T03:14:05Z INFO  test_runner::happy_path] Sent tokens to Ethereum with TXSendResponse { logs: Some(Array([Object({"events": Array([Object({"attributes": Array([Object({"key": String("action"), "value": String("send_to_eth")}), Object({"key": String("sender"), "value": String("cosmos1ak4ukur2kyz6vwec54wy4fj5n7glwknhvfqhh2")}), Object({"key": String("module"), "value": String("send_to_eth")}), Object({"key": String("outgoing_tx_id"), "value": String("1")})]), "type": String("message")}), Object({"attributes": Array([Object({"key": String("recipient"), "value": String("cosmos1979qcq0kdz72w0k9rsxcmfmagx2cydrslxhw5s")}), Object({"key": String("sender"), "value": String("cosmos1ak4ukur2kyz6vwec54wy4fj5n7glwknhvfqhh2")}), Object({"key": String("amount"), "value": String("296peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609")})]), "type": String("transfer")}), Object({"attributes": Array([Object({"key": String("module"), "value": String("peggy")}), Object({"key": String("bridge_contract")}), Object({"key": String("bridge_chain_id"), "value": String("0")}), Object({"key": String("outgoing_tx_id"), "value": String("1")}), Object({"key": String("nonce"), "value": String("1")})]), "type": String("withdrawal_received")})])})])), txhash: "9B7A6DEBF4E801C58FB15FA868139867A36D569252D08964C053AA6FC73C97FF" }
+[2021-09-10T03:14:05Z INFO  test_runner::happy_path] Requesting transaction batch
+[2021-09-10T03:14:13Z INFO  orchestrator::main_loop] Sending batch confirm for 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 with 1 in fees
+[2021-09-10T03:14:13Z INFO  orchestrator::main_loop] Sending batch confirm for 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 with 1 in fees
+[2021-09-10T03:14:13Z INFO  orchestrator::main_loop] Sending batch confirm for 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 with 1 in fees
+[2021-09-10T03:14:17Z INFO  test_runner::happy_path] Batch is not yet submitted 0>, waiting
+[2021-09-10T03:14:18Z INFO  relayer::batch_relaying] We have detected latest batch 1 but latest on Ethereum is 0 This batch is estimated to cost 1000000000 Gas / 0.0002 ETH to submit
+[2021-09-10T03:14:18Z INFO  ethereum_peggy::submit_batch] Ordering signatures and submitting TransactionBatch 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 to Ethereum
+[2021-09-10T03:14:18Z INFO  ethereum_peggy::submit_batch] Sent batch update with txid 0xd2a43aa4fbe1f6d0ed12b55297b8f402e1abe933edb61125532d1cadc10bfd87
+[2021-09-10T03:14:18Z INFO  relayer::batch_relaying] We have detected latest batch 1 but latest on Ethereum is 0 This batch is estimated to cost 1000000000 Gas / 0.0002 ETH to submit
+[2021-09-10T03:14:18Z INFO  ethereum_peggy::submit_batch] Ordering signatures and submitting TransactionBatch 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 to Ethereum
+[2021-09-10T03:14:18Z INFO  relayer::batch_relaying] We have detected latest batch 1 but latest on Ethereum is 0 This batch is estimated to cost 1000000000 Gas / 0.0002 ETH to submit
+[2021-09-10T03:14:18Z INFO  ethereum_peggy::submit_batch] Ordering signatures and submitting TransactionBatch 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609:1 to Ethereum
+[2021-09-10T03:14:18Z INFO  ethereum_peggy::submit_batch] Sent batch update with txid 0x8b23b7928f82d4dc70505453eda2928133a4ead9b6c71bdff7d934ab5115ccc3
+[2021-09-10T03:14:18Z INFO  ethereum_peggy::submit_batch] Sent batch update with txid 0x16c69db19938e1f243caad9c1c5651d23331fa3a1836c9760c6b60ccf51ff6fe
+[2021-09-10T03:14:21Z INFO  test_runner::happy_path] Batch is not yet submitted 0>, waiting
+[2021-09-10T03:14:22Z INFO  ethereum_peggy::submit_batch] Successfully updated Batch with new Nonce 1
+[2021-09-10T03:14:22Z INFO  ethereum_peggy::submit_batch] Successfully updated Batch with new Nonce 1
+[2021-09-10T03:14:22Z INFO  ethereum_peggy::submit_batch] Successfully updated Batch with new Nonce 1
+[2021-09-10T03:14:31Z INFO  orchestrator::ethereum_event_watcher] Oracle observed batch with nonce 1, contract 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609, and event nonce 4
+[2021-09-10T03:14:32Z INFO  orchestrator::ethereum_event_watcher] Oracle observed batch with nonce 1, contract 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609, and event nonce 4
+[2021-09-10T03:14:32Z INFO  orchestrator::ethereum_event_watcher] Oracle observed batch with nonce 1, contract 0x0412C7c846bb6b7DC462CF6B453f76D8440b2609, and event nonce 4
+[2021-09-10T03:14:32Z INFO  orchestrator::ethereum_event_watcher] Claims processed, new nonce 4
+[2021-09-10T03:14:34Z INFO  test_runner::happy_path] Successfully updated txbatch nonce to 1 and sent 295peggy0x0412C7c846bb6b7DC462CF6B453f76D8440b2609 tokens to Ethereum!
 ```

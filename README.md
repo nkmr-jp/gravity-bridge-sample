@@ -10,6 +10,16 @@ make clone
 Dockerで各種サービスを起動してテスト実行
 ```sh
 make all-up-test 
+
+# トラブルシューティング
+## Error HH502: Couldn't download compiler versions list. Please check your connection.
+## VPNを無効にして実行する。
+```
+
+ログの確認
+```sh
+tail -f ./data/log/all-up-test-[timestamp].log 
+cat  ./data/log/all-up-test-[timestamp].log
 ```
 
 peggy(gravity)コマンドのビルド
