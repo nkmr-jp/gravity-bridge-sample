@@ -502,12 +502,12 @@ Collected 3 gentx
 ```
 
 
-## 2-3.　`test-runner(Rust)`　実行
+## 2-3.　Test Runner 起動
 
 ### ログの見方
-- `INFO [09-10|03:04:10.481] ...` geth(Go)のログ
-- `[2021-09-10T03:04:23Z INFO  ...] ...` Rustのログ
-- `3:04AM ERR ...` peggy(Go)のログ
+- `INFO [09-10|03:04:10.481] ...` Gethのログ
+- `[2021-09-10T03:04:23Z INFO  ...] ...` Rustのログ(test-runnerなど)
+- `3:04AM ERR ...` Peggyのログ
 
 
 ```sh
@@ -685,9 +685,9 @@ warning: 1 warning emitted
 + sleep 10
 ```
 
-## 2-4. `geth` 起動
+## 2-4. Geth 起動
 
-```
+```sh
 + bash /peggy/tests/container-scripts/run-eth.sh
 INFO [09-10|03:04:10.481] Maximum peer count                       ETH=50 LES=0 total=50
 INFO [09-10|03:04:10.481] Smartcard socket not found, disabling    err="stat /run/pcscd/pcscd.comm: no such file or directory"
@@ -700,6 +700,10 @@ INFO [09-10|03:04:10.531] Allocated cache and file handles         database=/roo
 INFO [09-10|03:04:10.539] Writing custom genesis block
 INFO [09-10|03:04:10.540] Persisted trie from memory database      nodes=1 size=150.00B time="85.29µs"   gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B
 INFO [09-10|03:04:10.541] Successfully wrote genesis state         database=lightchaindata                      hash="1d4e59…faac29"
+```
+
+## 2-5. Bootstrapping
+```
 [2021-09-10T03:04:23Z INFO  test_runner] test-runner in contract deploying mode, deploying contracts, then exiting
 [2021-09-10T03:04:23Z INFO  test_runner::bootstrapping] Signing and submitting Delegate addresses 0x8Cc75e50CC0c9Dd190389e8aBEe80Dd60e38cE43 for validator cosmos1a42emzmx2e8c2668u2taq8d3cwdvr5nc086y6u
 [2021-09-10T03:04:23Z INFO  test_runner::bootstrapping] Signing and submitting Delegate addresses 0xC233c8461f1ae3c7019bd3F90feD64c729d4a987 for validator cosmos1g440atgq8ln6fdaghpt6frwxtve8kaguhxg27l
@@ -749,6 +753,10 @@ INFO [09-10|03:04:10.541] Successfully wrote genesis state         database=ligh
     Peggy deployed at Address -  0x7580bFE88Dd3d07947908FAE12d95872a260F2D8
 
 [2021-09-10T03:11:02Z INFO  test_runner::bootstrapping] stderr:
+```
+
+## 2-6. Integration Tests
+```
 + bash /peggy/tests/container-scripts/integration-tests.sh 3
 Contracts already deployed, running tests
 test-runner: no process found
