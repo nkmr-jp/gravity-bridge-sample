@@ -17,9 +17,16 @@ make all-up-test
 ```
 
 ログの確認
+
+起動時
 ```sh
 tail -f ./data/log/all-up-test-[timestamp].log 
 cat  ./data/log/all-up-test-[timestamp].log
+```
+
+test_runnerのログを確認
+```sh
+make log | jq
 ```
 
 rustのドキュメント起動

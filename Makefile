@@ -17,4 +17,4 @@ rust-doc:
 	cd $(VENDOR_DIR)/gravity-bridge/module; cargo doc --open
 
 log:
-	@cat $(VENDOR_DIR)/gravity-bridge/data/container/json_log/*.log
+	@cat $(shell ls -1t $(VENDOR_DIR)/gravity-bridge/data/container/json_log/* | sed q)
