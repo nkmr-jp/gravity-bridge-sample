@@ -12,3 +12,9 @@ all-up-test:
 
 build-cmd:
 	cd $(VENDOR_DIR)/gravity-bridge/module; make
+
+rust-doc:
+	cd $(VENDOR_DIR)/gravity-bridge/module; cargo doc --open
+
+log:
+	@cat $(VENDOR_DIR)/gravity-bridge/data/container/json_log/*.log

@@ -22,6 +22,12 @@ tail -f ./data/log/all-up-test-[timestamp].log
 cat  ./data/log/all-up-test-[timestamp].log
 ```
 
+rustのドキュメント起動
+```sh
+make rust-doc
+```
+
+
 peggy(gravity)コマンドのビルド
 ```sh
 make build-cmd
