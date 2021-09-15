@@ -2,45 +2,64 @@
 
 See: https://github.com/cosmos/gravity-bridge/tree/v0.1.1
 
-リポジトリ取得
+# リポジトリ取得
 ```sh
 make clone 
 ```
 
-Dockerで各種サービスを起動してテスト実行
+# Dockerで各種サービスを起動してテスト実行
 ```sh
 make all-up-test 
-
-# トラブルシューティング
-## Error HH502: Couldn't download compiler versions list. Please check your connection.
-## VPNを無効にして実行する。
 ```
 
-ログの確認
 
-起動時
+## トラブルシューティング
+
+### ネットワークエラー
+`Error HH502: Couldn't download compiler versions list. Please check your connection.`
+などのエラーがでたらVPNを無効にして実行する。
+
+### DockerのVolume不足
+実行には多くのリソースを消費するため、検証を繰り返しているとすぐにVolumeがいっぱいになってDockerが動かなくなります。
+動かなくなったら以下のコマンドで掃除してから実行する。
+
+```sh
+docker system df -v
+docker system prune
+```
+
+# ログの確認
+
+## 起動時
 ```sh
 tail -f ./data/log/all-up-test-[timestamp].log 
 cat  ./data/log/all-up-test-[timestamp].log
 ```
 
-test_runnerのログを確認
+## test_runnerのログを確認
 ```sh
 make log | jq
 ```
 
-rustのドキュメント起動
+# rustのドキュメント起動
 ```sh
 make rust-doc
 ```
 
+# rustのtest
 
-peggy(gravity)コマンドのビルド
+`make all-up-test` は実行に非常に時間がかかるため、rustのコードを変更した場合は先にmacローカルでテストを実行して、Compileのエラーなどがないことを確認する。
+
+```sh
+make rust-test
+```
+
+# peggy(gravity)コマンドのビルド
 ```sh
 make build-cmd
 ```
 
-peggy(gravity)コマンドの動作確認
+# peggy(gravity)コマンドの動作確認
 ```sh
 peggy version
 #> 0.1.1
